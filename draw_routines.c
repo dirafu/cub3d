@@ -13,3 +13,18 @@ void	put_px_on_img(t_x_data *x_data, int x, int y, int color)
 		*(unsigned int *)addr_b = xcolor;
 	}
 }
+
+void	put_wall_bar_on_img(int x, int wall_height, int color, t_x_data *x_data)
+{
+	int	y;
+	int	i;
+
+	i = 0;
+	y = (x_data->res[1] / 2) - wall_height / 2;
+	while (i < wall_height)
+	{
+		put_px_on_img(x_data, x, y, color);
+		y++;
+		i++;
+	}
+}

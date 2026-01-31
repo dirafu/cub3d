@@ -51,27 +51,40 @@ bool	set_player_pt2(char c, t_player *player)
 	return (true);
 }
 
-void	set_player(char **map, t_player *player)
+void	set_position(char **map, t_player *player)
 {
-	size_t	i;
-	size_t	j;
+	int	i;
+	int	j;
 
 	i = 0;
-	j = 0;
 	while (map[i])
 	{
+		j = 0;
 		while (map[i][j])
 		{
+			// printf("asdf\n");
+			// printf("i [%d]\nj [%d]\n", i, j);
 			if (set_player_pt2(map[i][j], player))
 			{
-				player->pos.x = (float)i + 0.5;
-				player->pos.y = (float)j + 0.5;
+				// printf("setted player i [%zu]\nj [%zu]\n", i, j);
+				player->pos.y = -((float)i + 0.5);
+				player->pos.x = (float)j + 0.5;
 				return ;
-			}				
+			}
 			j++;
 		}
+		//printf("going to increment i; i is [%zu]", i);
 		i++;
 	}
+}
+
+void	set_player(char **map, t_player *player)
+{
+	set_position(map, player);
+	player->cam_plane.x = player->dir.y;
+	player->cam_plane.y = -player->dir.x;
+	// printf("cam_plane.x=%f\ncam_plane.y=%f\n", player->cam_plane.x, player->cam_plane.y);
+	player->cam_plane = vec2d_mul(player->cam_plane, player->fov_scale);
 }
 
 int	main(void)
@@ -87,12 +100,15 @@ int	main(void)
 	static t_data	data;
 
 	//parse map -> validate map (is it closed) -
+	data.map = map;
+	data.player.fov_scale = tan(FOV / 2.0 * (M_PI / 180.0f));
 	init(&data.x_data);
-	set_default_keybindings(&data.input.keybindings);
+	set_default_keybindings(data.input.keybindings);
 	set_player(map, &data.player);
 	mlx_hook(data.x_data.win, 2, 1L << 0, key_down, &data.input);
 	mlx_hook(data.x_data.win, 3, 1L << 1, key_up, &data.input);
 	// mlx_hook(data.x_data.win, 17, 0, destroy_all_and_exit, &data);
 	mlx_loop_hook(data.x_data.xconn, game_loop, &data);
+	// mlx_put_image_to_window(data.x_data.xconn, data.x_data.win, data.x_data.img, 0, 0);
 	mlx_loop(data.x_data.xconn);
 }

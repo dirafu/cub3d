@@ -1,7 +1,8 @@
 P_NAME=cub3d
-CFLAGS=-Wall -Wextra -Werror
+CFLAGS=-Wall -Wextra -Werror -fsanitize=address -g
 HEADER=cub3d.h
-P_SRC=main.c movements.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c align_map.c world_rotations.c get_keys.c draw_line.c lerp.c keys.c allocs1.c allocs2.c parse_map1.c parse_map2.c matrix.c draw_loop.c
+P_SRC=main.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c \
+draw_routines.c game_loop.c key_ops.c vector_ops.c
 P_OBJ=$(P_SRC:.c=.o)
 
 all: $(HEADER) $(P_SRC) $(P_NAME)

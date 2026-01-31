@@ -9,17 +9,21 @@ t_point2d	vec2d_sum(t_point2d p1, t_point2d p2)
 	return (tmp);
 }
 
-t_point2d	vec2d_mul(t_point2d p1, t_point2d p2)
+t_point2d	vec2d_mul(t_point2d p1, float n)
 {
+	t_point2d	tmp;
+
+	tmp.x = p1.x * n;
+	tmp.y = p1.y * n;
+	return (tmp);
+}
+
+// t_point2d	vec2d_rotate(t_point2d p1, float angle)
+// {
 	
-}
+// }
 
-t_point2d	vec2d_rotate(t_point2d p1, float angle)
-{
-	
-}
+// t_point2d	vec2d_normalize(t_point2d p1)
+// {
 
-t_point2d	vec2d_normalize(t_point2d p1)
-{
-
-}
+// }

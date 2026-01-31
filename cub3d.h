@@ -10,7 +10,7 @@
 
 # define RES_X 640
 # define RES_Y 480
-# define FOV 75
+# define FOV 90
 # define MAX_SIMULTANEOUS_KEYS 10
 
 typedef enum actions
@@ -23,6 +23,13 @@ typedef enum actions
 	ACT_STRAFE_RIGHT,
 	ACT_COUNT
 }	t_actions;
+
+typedef enum hit_type
+{
+	HIT_NONE,
+	VERTICAL,
+	HORIZONTAL
+}	t_hit_type;
 
 // typedef float	t_point2d[2];
 
@@ -49,6 +56,7 @@ typedef	struct s_player
 	t_point2d	dir;
 	t_point2d	pos;
 	t_point2d	cam_plane;
+	float		fov_scale;
 }	t_player;
 
 typedef	struct s_keybindings
@@ -60,7 +68,7 @@ typedef	struct s_keybindings
 typedef	struct s_input
 {
 	bool			actions[ACT_COUNT];
-	t_keybindings	keybindings[ACT_COUNT];
+	t_keybindings	keybindings[ACT_COUNT * 2];
 }	t_input;
 
 typedef	struct s_data
@@ -68,16 +76,38 @@ typedef	struct s_data
 	t_x_data	x_data;
 	t_player	player;
 	t_input		input;
+	char		**map;
 }	t_data;
+
+typedef	struct s_render_facilities
+{
+	float		t_x;
+	float		t_y;
+	float		next_x;
+	float		next_y;
+	char		step_x;
+	char		step_y;
+	int			x;
+	int			y;
+	t_hit_type	hit;
+	int			wall_height;
+}	t_render_facilities;
+
 
 //input
 void	set_default_keybindings(t_keybindings *keybindings);
 int		key_down(int keysym, t_input *input);
 int		key_up(int keysym, t_input *input);
-void	put_px_on_img(t_x_data *x_data, int x, int y, int color);
-int		game_loop(t_data *data);
 
 //vector op-s
 t_point2d	vec2d_sum(t_point2d p1, t_point2d p2);
+t_point2d	vec2d_mul(t_point2d p1, float n);
+
+//draw routines
+void	put_px_on_img(t_x_data *x_data, int x, int y, int color);
+void	put_wall_bar_on_img(int x, int wall_height, int color, t_x_data *x_data);
+
+//main game loop
+int		game_loop(t_data *data);
 
 #endif
