@@ -62,18 +62,14 @@ void	set_position(char **map, t_player *player)
 		j = 0;
 		while (map[i][j])
 		{
-			// printf("asdf\n");
-			// printf("i [%d]\nj [%d]\n", i, j);
 			if (set_player_pt2(map[i][j], player))
 			{
-				// printf("setted player i [%zu]\nj [%zu]\n", i, j);
 				player->pos.y = -((float)i + 0.5);
 				player->pos.x = (float)j + 0.5;
 				return ;
 			}
 			j++;
 		}
-		//printf("going to increment i; i is [%zu]", i);
 		i++;
 	}
 }
@@ -83,25 +79,24 @@ void	set_player(char **map, t_player *player)
 	set_position(map, player);
 	player->cam_plane.x = player->dir.y;
 	player->cam_plane.y = -player->dir.x;
-	// printf("cam_plane.x=%f\ncam_plane.y=%f\n", player->cam_plane.x, player->cam_plane.y);
 	player->cam_plane = vec2d_mul(player->cam_plane, player->fov_scale);
 }
 
 int	main(void)
 {
-	char	*map[6] = {
+	char	*map[7] = {
 			"111111",
-			"100101",
-			"101001",
-			"1100N1",
+			"100001",
+			"110101",
+			"100001",
+			"11N001",
 			"111111",
 			NULL
 			};
 	static t_data	data;
 
-	//parse map -> validate map (is it closed) -
 	data.map = map;
-	data.player.fov_scale = tan(FOV / 2.0 * (M_PI / 180.0f));
+	data.player.fov_scale = tanf(FOV / 2.0 * (M_PI / 180.0f));
 	init(&data.x_data);
 	set_default_keybindings(data.input.keybindings);
 	set_player(map, &data.player);

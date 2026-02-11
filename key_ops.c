@@ -43,3 +43,19 @@ int	key_up(int keysym, t_input *input)
 	}
 	return (1);
 }
+
+void	handle_keys(t_data *data)
+{
+	if (data->input.actions[ACT_LEFT])
+		rotate_player(&data->player, 1.0f);
+	else if (data->input.actions[ACT_RIGHT])
+		rotate_player(&data->player, -1.0f);
+	if (data->input.actions[ACT_FORWARD])
+		step_player(&data->player, 0.05f, PARALLEL);
+	else if (data->input.actions[ACT_BACKWARD])
+		step_player(&data->player, -0.05f, PARALLEL);
+	if (data->input.actions[ACT_STRAFE_RIGHT])
+		step_player(&data->player, 0.05f, PERPENDICULAR);
+	else if (data->input.actions[ACT_STRAFE_LEFT])
+		step_player(&data->player, -0.05f, PERPENDICULAR);
+}
