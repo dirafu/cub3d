@@ -109,6 +109,8 @@ int	main(void)
 		return (free_data(&data), print_error(), 1);
 	set_default_keybindings(data.input.keybindings);
 	set_player(map, &data.player);
+	data.ceiling_color = 0x1980a6;
+	data.floor_color = 0xb3c7bd;
 	mlx_hook(data.x_data.win, 2, 1L << 0, key_down, &data.input);
 	mlx_hook(data.x_data.win, 3, 1L << 1, key_up, &data.input);
 	mlx_hook(data.x_data.win, 17, 0, exit_handler, &data);

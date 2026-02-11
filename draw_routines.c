@@ -15,17 +15,26 @@ void	put_px_on_img(t_x_data *x_data, int x, int y, int color)
 	}
 }
 
-void	put_wall_bar_on_img(int x, int wall_height, int color, t_x_data *x_data)
+void	put_wall_bar_on_img(int x, int wall_height, int color, t_data *data)
 {
 	int	y;
 	int	i;
 
 	i = 0;
-	y = (x_data->res[1] / 2) - wall_height / 2;
-	while (i < wall_height)
+	y = (data->x_data.res[1] / 2) - wall_height / 2;
+	while (i < y)
 	{
-		put_px_on_img(x_data, x, y, color);
-		y++;
+		put_px_on_img(&data->x_data, x, i, data->ceiling_color);
+		i++;
+	}
+	while (i < wall_height + y)
+	{
+		put_px_on_img(&data->x_data, x, i, color);
+		i++;
+	}
+	while (i < data->x_data.res[1])
+	{
+		put_px_on_img(&data->x_data, x, i, data->floor_color);
 		i++;
 	}
 }

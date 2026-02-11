@@ -49,7 +49,7 @@ void	cast_ray(t_data *data, t_point2d raydir, char **map, int x)
 		rf.wall_height = data->x_data.res[1] / (rf.next_x - rf.t_x);
 	else if (rf.hit == HORIZONTAL)
 		rf.wall_height = data->x_data.res[1] / (rf.next_y - rf.t_y);
-	put_wall_bar_on_img(x, rf.wall_height, (255 << 8) + (255 << 16), &data->x_data);
+	put_wall_bar_on_img(x, rf.wall_height, (255 << 8) + (255 << 16), data);
 }
 
 void	draw_frame(t_data *data)
@@ -58,8 +58,6 @@ void	draw_frame(t_data *data)
 	t_x_data	*x_d;
 
 	x_d = &(data->x_data);
-	ft_bzero(x_d->curr_framebuf->addr,
-		x_d->res[0] * x_d->res[1] * (x_d->curr_framebuf->bpp / 8));
 	x = 0;
 	while (x++ <= x_d->res[0])
 	{

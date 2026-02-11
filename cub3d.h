@@ -100,6 +100,8 @@ typedef	struct s_data
 	t_player	player;
 	t_input		input;
 	char		**map;
+	int			ceiling_color;
+	int			floor_color;
 }	t_data;
 
 typedef	struct s_render_facilities
@@ -136,7 +138,7 @@ t_point2d	vec2d_normalize(t_point2d p1);
 
 //draw routines
 void	put_px_on_img(t_x_data *x_data, int x, int y, int color);
-void	put_wall_bar_on_img(int x, int wall_height, int color, t_x_data *x_data);
+void	put_wall_bar_on_img(int x, int wall_height, int color, t_data *data);
 
 //rendering
 void	fill_render_info(t_render_facilities *rf, t_player *player, t_point2d *raydir);
