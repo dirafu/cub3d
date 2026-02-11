@@ -46,16 +46,19 @@ int	key_up(int keysym, t_input *input)
 
 void	handle_keys(t_data *data)
 {
+	double	d_t;
+
+	d_t = data->time_data.time_d;
 	if (data->input.actions[ACT_LEFT])
-		rotate_player(&data->player, 1.0f);
+		rotate_player(&data->player, 80.0f * d_t);
 	else if (data->input.actions[ACT_RIGHT])
-		rotate_player(&data->player, -1.0f);
+		rotate_player(&data->player, -80.0f * d_t);
 	if (data->input.actions[ACT_FORWARD])
-		step_player(&data->player, 0.05f, PARALLEL);
+		step_player(&data->player, 2.0f * d_t, PARALLEL);
 	else if (data->input.actions[ACT_BACKWARD])
-		step_player(&data->player, -0.05f, PARALLEL);
+		step_player(&data->player, -2.0f * d_t, PARALLEL);
 	if (data->input.actions[ACT_STRAFE_RIGHT])
-		step_player(&data->player, 0.05f, PERPENDICULAR);
+		step_player(&data->player, 2.0f * d_t, PERPENDICULAR);
 	else if (data->input.actions[ACT_STRAFE_LEFT])
-		step_player(&data->player, -0.05f, PERPENDICULAR);
+		step_player(&data->player, -2.0f * d_t, PERPENDICULAR);
 }

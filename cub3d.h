@@ -8,6 +8,10 @@
 # include <fcntl.h>
 # include <math.h>
 # include <stdbool.h>
+# include <errno.h>
+# include <stdio.h>
+# include <stdint.h>
+# include <sys/time.h>
 
 # define RES_X 640
 # define RES_Y 480
@@ -37,8 +41,6 @@ enum	direction
 	PARALLEL,
 	PERPENDICULAR
 };
-
-// typedef float	t_point2d[2];
 
 typedef	struct s_point2d
 {
@@ -85,8 +87,15 @@ typedef	struct s_input
 	t_keybindings	keybindings[ACT_COUNT * 2];
 }	t_input;
 
+typedef	struct s_time_data
+{
+	double		time_d;
+	uint64_t	last_frame_time;
+}	t_time_data;
+
 typedef	struct s_data
 {
+	t_time_data	time_data;
 	t_x_data	x_data;
 	t_player	player;
 	t_input		input;
@@ -105,6 +114,7 @@ typedef	struct s_render_facilities
 	int			y;
 	t_hit_type	hit;
 	int			wall_height;
+	int			overall_number_of_steps;
 }	t_render_facilities;
 
 
@@ -139,5 +149,9 @@ int		exit_handler(t_data *data);
 
 //main game loop
 int		game_loop(t_data *data);
+
+//misc
+uint64_t	ft_get_time_us(void);
+void		print_error();
 
 #endif

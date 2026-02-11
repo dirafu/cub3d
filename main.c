@@ -106,12 +106,13 @@ int	main(void)
 	data.map = map;
 	data.player.fov_scale = tanf(FOV / 2.0 * (M_PI / 180.0f));
 	if (!init(&data.x_data))
-		return (free_data(&data), 1);
+		return (free_data(&data), print_error(), 1);
 	set_default_keybindings(data.input.keybindings);
 	set_player(map, &data.player);
 	mlx_hook(data.x_data.win, 2, 1L << 0, key_down, &data.input);
 	mlx_hook(data.x_data.win, 3, 1L << 1, key_up, &data.input);
 	mlx_hook(data.x_data.win, 17, 0, exit_handler, &data);
+	data.time_data.last_frame_time = ft_get_time_us();
 	mlx_loop_hook(data.x_data.xconn, game_loop, &data);
 	mlx_loop(data.x_data.xconn);
 }

@@ -18,6 +18,7 @@ void	fill_render_info(t_render_facilities *rf,
 		rf->next_y = (floorf(player->pos.y) + 1 - player->pos.y) * rf->t_y;
 	rf->step_x = ((raydir->x < 0) * -2) + 1;
 	rf->step_y = ((raydir->y < 0) * -2) + 1;
+	rf->overall_number_of_steps = 0;
 }
 
 void	cast_ray(t_data *data, t_point2d raydir, char **map, int x)
@@ -39,6 +40,8 @@ void	cast_ray(t_data *data, t_point2d raydir, char **map, int x)
 			rf.y += rf.step_y;
 			rf.hit = HORIZONTAL;
 		}
+		rf.overall_number_of_steps++;
+		//if (overall_number_of_steps >= map.height + map.width) return;
 		if (map[-rf.y][rf.x] != '1')
 			rf.hit = HIT_NONE;
 	}

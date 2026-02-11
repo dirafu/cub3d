@@ -29,6 +29,11 @@ void	free_data(t_data *data)
 	//TODO: free map
 }
 
+void	print_error(void)
+{
+	perror("Cub3d: an error occured:");
+}
+
 int	exit_handler(t_data *data)
 {
 	free_data(data);
