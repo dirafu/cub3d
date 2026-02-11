@@ -1,6 +1,7 @@
 #include "cub3d.h"
 
-void	fill_render_info(t_render_facilities *rf, t_player *player, t_point2d *raydir)
+void	fill_render_info(t_render_facilities *rf,
+		t_player *player, t_point2d *raydir)
 {
 	rf->hit = HIT_NONE;
 	rf->x = player->pos.x;
@@ -50,14 +51,20 @@ void	cast_ray(t_data *data, t_point2d raydir, char **map, int x)
 
 void	draw_frame(t_data *data)
 {
-	int	x;
+	int			x;
+	t_x_data	*x_d;
 
-	ft_bzero(data->x_data.addr, data->x_data.res[0] * data->x_data.res[1] * (data->x_data.bpp / 8));
+	x_d = &(data->x_data);
+	ft_bzero(x_d->curr_framebuf->addr,
+		x_d->res[0] * x_d->res[1] * (x_d->curr_framebuf->bpp / 8));
 	x = 0;
-	while (x++ <= data->x_data.res[0])
+	while (x++ <= x_d->res[0])
 	{
 		cast_ray(data, vec2d_sum(data->player.dir,
-			vec2d_mul(data->player.cam_plane, (float)x / data->x_data.res[0] * 2 - 1)), data->map, x);
+				vec2d_mul(data->player.cam_plane,
+					(float)x / x_d->res[0] * 2 - 1)), data->map, x);
 	}
-	mlx_put_image_to_window(data->x_data.xconn, data->x_data.win, data->x_data.img, 0, 0);
+	mlx_put_image_to_window(x_d->xconn,
+		x_d->win, x_d->curr_framebuf->img, 0, 0);
+	x_d->curr_framebuf = &(x_d->img_data[(x_d->framebuf_sel)++ % 2]);
 }

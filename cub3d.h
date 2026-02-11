@@ -46,15 +46,22 @@ typedef	struct s_point2d
 	float	y;
 }	t_point2d;
 
-typedef struct s_x_data
+typedef struct s_img_data
 {
-	void		*xconn;
-	void		*win;
 	void		*img;
 	char		*addr;
 	int			bpp;
 	int			size_line;
 	int			endian;
+}	t_img_data;
+
+typedef struct s_x_data
+{
+	t_img_data	img_data[2];
+	t_img_data	*curr_framebuf;
+	void		*xconn;
+	void		*win;
+	int			framebuf_sel;
 	int			res[2];
 }	t_x_data;
 
@@ -125,6 +132,10 @@ void	put_wall_bar_on_img(int x, int wall_height, int color, t_x_data *x_data);
 void	fill_render_info(t_render_facilities *rf, t_player *player, t_point2d *raydir);
 void	cast_ray(t_data *data, t_point2d raydir, char **map, int x);
 void	draw_frame(t_data *data);
+
+//cleanup
+void	free_data(t_data *data);
+int		exit_handler(t_data *data);
 
 //main game loop
 int		game_loop(t_data *data);

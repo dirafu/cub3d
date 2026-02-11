@@ -4,8 +4,12 @@
 {'1', '0', '1', '0', '0', '1'},
 {'1', '1', '0', '0', 'N', '1'},
 {'1', '1', '1', '1', '1', '1'}*/
+
 void	*init(t_x_data *data)
 {
+	int	i;
+
+	i = 0;
 	data->res[0] = RES_X;
 	data->res[1] = RES_Y;
 	data->xconn = mlx_init();
@@ -13,14 +17,18 @@ void	*init(t_x_data *data)
 		return (NULL);
 	data->win = mlx_new_window(data->xconn, RES_X, RES_Y, "test");
 	if (!data->win)
-		return (free(data->xconn), NULL);
-	data->img = mlx_new_image(data->xconn, RES_X, RES_Y);
-	if (!data->img)
-		return ((void)mlx_destroy_window(data->xconn, data->win),
-			free(data->xconn), NULL);
-			// maybe add x_data_free() to clear all non-NULL ptrs in struct is significantly better for readability?
-	data->addr = mlx_get_data_addr(data->img, &(data->bpp),
-			&(data->size_line), &(data->endian));
+		return (NULL);
+	while (i < 2)
+	{
+		data->img_data[i].img = mlx_new_image(data->xconn, RES_X, RES_Y);
+		if (!data->img_data[i].img)
+			return (NULL);
+		data->img_data[i].addr = mlx_get_data_addr(data->img_data[i].img,
+				&(data->img_data[i].bpp),
+				&(data->img_data[i].size_line), &(data->img_data[i].endian));
+		i++;
+	}
+	data->curr_framebuf = &(data->img_data[(data->framebuf_sel)++ % 2]);
 	return (data);
 }
 
@@ -97,13 +105,13 @@ int	main(void)
 
 	data.map = map;
 	data.player.fov_scale = tanf(FOV / 2.0 * (M_PI / 180.0f));
-	init(&data.x_data);
+	if (!init(&data.x_data))
+		return (free_data(&data), 1);
 	set_default_keybindings(data.input.keybindings);
 	set_player(map, &data.player);
 	mlx_hook(data.x_data.win, 2, 1L << 0, key_down, &data.input);
 	mlx_hook(data.x_data.win, 3, 1L << 1, key_up, &data.input);
-	// mlx_hook(data.x_data.win, 17, 0, destroy_all_and_exit, &data);
+	mlx_hook(data.x_data.win, 17, 0, exit_handler, &data);
 	mlx_loop_hook(data.x_data.xconn, game_loop, &data);
-	// mlx_put_image_to_window(data.x_data.xconn, data.x_data.win, data.x_data.img, 0, 0);
 	mlx_loop(data.x_data.xconn);
 }
