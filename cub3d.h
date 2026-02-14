@@ -31,10 +31,23 @@ typedef enum actions
 
 typedef enum hit_type
 {
+	HIT_NORTH = 0,
+	HIT_WEST,
+	HIT_SOUTH,
+	HIT_EAST,
 	HIT_NONE,
 	VERTICAL,
-	HORIZONTAL
+	HORIZONTAL,
 }	t_hit_type;
+
+typedef enum
+{
+	TEXTURE_N_WALL = 0,
+	TEXTURE_W_WALL,
+	TEXTURE_S_WALL,
+	TEXTURE_E_WALL,
+	TEXTURE_COUNT
+}	t_texture_enum;
 
 enum	direction
 {
@@ -55,6 +68,8 @@ typedef struct s_img_data
 	int			bpp;
 	int			size_line;
 	int			endian;
+	int			res_x;
+	int			res_y;
 }	t_img_data;
 
 typedef struct s_x_data
@@ -93,15 +108,19 @@ typedef	struct s_time_data
 	uint64_t	last_frame_time;
 }	t_time_data;
 
+
+
+
 typedef	struct s_data
 {
-	t_time_data	time_data;
-	t_x_data	x_data;
-	t_player	player;
-	t_input		input;
-	char		**map;
-	int			ceiling_color;
-	int			floor_color;
+	t_time_data		time_data;
+	t_x_data		x_data;
+	t_player		player;
+	t_input			input;
+	t_img_data		textures[TEXTURE_COUNT];
+	char			**map;
+	int				ceiling_color;
+	int				floor_color;
 }	t_data;
 
 typedef	struct s_render_facilities
@@ -117,6 +136,7 @@ typedef	struct s_render_facilities
 	t_hit_type	hit;
 	int			wall_height;
 	int			overall_number_of_steps;
+	float		tex_x;
 }	t_render_facilities;
 
 
@@ -138,7 +158,8 @@ t_point2d	vec2d_normalize(t_point2d p1);
 
 //draw routines
 void	put_px_on_img(t_x_data *x_data, int x, int y, int color);
-void	put_wall_bar_on_img(int x, int wall_height, int color, t_data *data);
+void	put_wall_bar_on_img(int x, t_data *data, t_render_facilities *rf);
+int		get_img_px_color(t_img_data *image, int x, int y);
 
 //rendering
 void	fill_render_info(t_render_facilities *rf, t_player *player, t_point2d *raydir);

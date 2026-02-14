@@ -1,5 +1,18 @@
 #include "cub3d.h"
 
+void	free_textures(t_data *data)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < TEXTURE_COUNT)
+	{
+		if (data->textures[i].img && data->x_data.xconn)
+			mlx_destroy_image(data->x_data.xconn, data->textures[i].img);
+		data->textures[i].img = NULL;
+	}
+}
+
 void	free_data(t_data *data)
 {
 	int	i;
@@ -19,6 +32,7 @@ void	free_data(t_data *data)
 		}
 		i++;
 	}
+	free_textures(data);
 	if (data->x_data.xconn)
 	{
 		mlx_destroy_display(data->x_data.xconn);
@@ -26,7 +40,6 @@ void	free_data(t_data *data)
 		data->x_data.xconn = NULL;
 	}
 	data->x_data.curr_framebuf = NULL;
-	//TODO: free map
 }
 
 void	print_error(void)

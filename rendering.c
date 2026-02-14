@@ -21,35 +21,59 @@ void	fill_render_info(t_render_facilities *rf,
 	rf->overall_number_of_steps = 0;
 }
 
+static void	do_step(t_point2d *raydir, t_render_facilities *rf)
+{
+	if (rf->next_x < rf->next_y)
+	{	
+		rf->next_x += rf->t_x;
+		rf->x += rf->step_x;
+		rf->hit = VERTICAL;
+		if (raydir->x < 0)
+			rf->hit = HIT_EAST;
+		else
+			rf->hit = HIT_WEST;
+	}
+	else
+	{
+		rf->next_y += rf->t_y;
+		rf->y += rf->step_y;
+		rf->hit = HORIZONTAL;
+		if (raydir->x < 0)
+			rf->hit = HIT_NORTH;
+		else
+			rf->hit = HIT_SOUTH;
+	}
+
+}
+
 void	cast_ray(t_data *data, t_point2d raydir, char **map, int x)
 {
 	t_render_facilities	rf;
 
 	fill_render_info(&rf, &data->player, &raydir);
-	while (!rf.hit)
+	while (rf.hit == HIT_NONE)
 	{
-		if (rf.next_x < rf.next_y)
-		{
-			rf.next_x += rf.t_x;
-			rf.x += rf.step_x;
-			rf.hit = VERTICAL;
-		}
-		else
-		{
-			rf.next_y += rf.t_y;
-			rf.y += rf.step_y;
-			rf.hit = HORIZONTAL;
-		}
+		do_step(&raydir, &rf);
 		rf.overall_number_of_steps++;
-		//if (overall_number_of_steps >= map.height + map.width) return;
+		// if (rf.overall_number_of_steps >= map.height + map.width)
+		// 	return;
 		if (map[-rf.y][rf.x] != '1')
 			rf.hit = HIT_NONE;
 	}
-	if (rf.hit == VERTICAL)
+	if (rf.hit == HIT_EAST || rf.hit == HIT_WEST)
+	{
 		rf.wall_height = data->x_data.res[1] / (rf.next_x - rf.t_x);
-	else if (rf.hit == HORIZONTAL)
+		rf.tex_x = data->player.pos.x + raydir.x * (rf.next_x - rf.t_x);
+	}
+	else if (rf.hit == HIT_NORTH || rf.hit == HIT_SOUTH)
+	{
 		rf.wall_height = data->x_data.res[1] / (rf.next_y - rf.t_y);
-	put_wall_bar_on_img(x, rf.wall_height, (255 << 8) + (255 << 16), data);
+		rf.tex_x = data->player.pos.y + raydir.y * (rf.next_y - rf.t_y);
+	}
+	rf.tex_x -= floorf(rf.tex_x);
+	printf("tex_x [%f]\n", rf.tex_x);
+	rf.tex_x = 0.5;
+	put_wall_bar_on_img(x, data, &rf);
 }
 
 void	draw_frame(t_data *data)

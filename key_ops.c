@@ -20,6 +20,7 @@ int	key_down(int keysym, t_input *input)
 {
 	int	i;
 
+	//printf("key pressed down\n");
 	i = 0;
 	while (i < ACT_COUNT)
 	{

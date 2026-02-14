@@ -21,7 +21,7 @@ void	*ft_calloc(size_t count, size_t size)
 
 	if (!count || !size)
 		return (malloc(1));
-	if (count > SIZE_MAX / count)
+	if (count > SIZE_MAX / size)
 		return (0);
 	objs_s = count * size;
 	ptr = malloc(objs_s);

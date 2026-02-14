@@ -90,6 +90,28 @@ void	set_player(char **map, t_player *player)
 	player->cam_plane = vec2d_mul(player->cam_plane, player->fov_scale);
 }
 
+bool	read_wall_textures(t_data *data)
+{
+	size_t		i;
+	static char	*texture_filenames[] = {
+		"wall_textures/N_wall.xpm",
+		"wall_textures/W_wall.xpm",
+		"wall_textures/S_wall.xpm",
+		"wall_textures/E_wall.xpm"
+	};
+
+	i = 0;
+	while (i < TEXTURE_COUNT)
+	{
+		data->textures[i].img = mlx_xpm_file_to_image(data->x_data.xconn, texture_filenames[i], &(data->textures[i].res_x), &(data->textures[i].res_y));
+		if (!data->textures[i].img)
+			return (false);
+		data->textures[i].addr = mlx_get_data_addr(data->textures[i].img, &data->textures[i].bpp, &data->textures[i].size_line, &data->textures[i].endian);
+		i++;
+	}
+	return (true);
+}
+
 int	main(void)
 {
 	char	*map[7] = {
@@ -105,8 +127,11 @@ int	main(void)
 
 	data.map = map;
 	data.player.fov_scale = tanf(FOV / 2.0 * (M_PI / 180.0f));
-	if (!init(&data.x_data))
+	if (!init(&data.x_data) || !read_wall_textures(&data))
 		return (free_data(&data), print_error(), 1);
+	//mlx_put_image_to_window(data.x_data.xconn, data.x_data.win, data.textures[0].img, 0, 0);
+	//while(1) sleep(3600);
+	//return (0);
 	set_default_keybindings(data.input.keybindings);
 	set_player(map, &data.player);
 	data.ceiling_color = 0x1980a6;
