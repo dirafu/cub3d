@@ -88,6 +88,7 @@ void	set_player(char **map, t_player *player)
 	player->cam_plane.x = player->dir.y;
 	player->cam_plane.y = -player->dir.x;
 	player->cam_plane = vec2d_mul(player->cam_plane, player->fov_scale);
+	player->radius = PLAYER_RADIUS;
 }
 
 bool	read_wall_textures(t_data *data)

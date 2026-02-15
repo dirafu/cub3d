@@ -54,11 +54,11 @@ void	handle_keys(t_data *data)
 	else if (data->input.actions[ACT_RIGHT])
 		rotate_player(&data->player, -90.0f * d_t);
 	if (data->input.actions[ACT_FORWARD])
-		step_player(&data->player, 2.0f * d_t, PARALLEL);
+		step_player(&data->player, data->map, 2.0f * d_t, PARALLEL);
 	else if (data->input.actions[ACT_BACKWARD])
-		step_player(&data->player, -2.0f * d_t, PARALLEL);
+		step_player(&data->player, data->map, -2.0f * d_t, PARALLEL);
 	if (data->input.actions[ACT_STRAFE_RIGHT])
-		step_player(&data->player, 2.0f * d_t, PERPENDICULAR);
+		step_player(&data->player, data->map, 2.0f * d_t, PERPENDICULAR);
 	else if (data->input.actions[ACT_STRAFE_LEFT])
-		step_player(&data->player, -2.0f * d_t, PERPENDICULAR);
+		step_player(&data->player, data->map, -2.0f * d_t, PERPENDICULAR);
 }

@@ -17,6 +17,7 @@
 # define RES_Y 480
 # define FOV 66
 # define MAX_SIMULTANEOUS_KEYS 10
+# define PLAYER_RADIUS 0.1f
 
 typedef enum actions
 {
@@ -87,6 +88,7 @@ typedef	struct s_player
 	t_point2d	dir;
 	t_point2d	pos;
 	t_point2d	cam_plane;
+	float		radius;
 	float		fov_scale;
 }	t_player;
 
@@ -107,9 +109,6 @@ typedef	struct s_time_data
 	double		time_d;
 	uint64_t	last_frame_time;
 }	t_time_data;
-
-
-
 
 typedef	struct s_data
 {
@@ -148,7 +147,32 @@ void	handle_keys(t_data *data);
 
 //movement
 void	rotate_player(t_player *player, float angle);
-void	step_player(t_player *player, float step_size, enum direction dir);
+// void	step_player(t_player *player, float step_size, enum direction dir);
+void	step_player(t_player *player, char **map, float step_size, enum direction dir);
+// {
+// 	t_point2d	step;
+// 	t_point2d	new_pos;
+// 	float		tmp;
+
+// 	step = player->dir;
+// 	if (dir == PERPENDICULAR)
+// 	{
+// 		tmp = -step.x;
+// 		step.x = step.y;
+// 		step.y = tmp;
+// 	}
+// 	step = vec2d_mul(step, 0.05f);
+// 	while (step_size > 0)
+// 	{
+// 		step_size -= 0.05f;
+// 		new_pos = vec2d_sum(player->pos, step);
+// 		if (map[-(int)new_pos.y][(int)new_pos.x] == '1')
+// 		{
+// 			return ;
+// 		}
+// 		player->pos = new_pos;
+// 	}
+// }
 
 //vector op-s
 t_point2d	vec2d_sum(t_point2d p1, t_point2d p2);
