@@ -90,5 +90,6 @@ void	draw_frame(t_data *data)
 	}
 	mlx_put_image_to_window(x_d->xconn,
 		x_d->win, x_d->curr_framebuf->img, 0, 0);
+	mlx_do_sync(x_d->xconn);
 	x_d->curr_framebuf = &(x_d->img_data[(x_d->framebuf_sel)++ % 2]);
 }

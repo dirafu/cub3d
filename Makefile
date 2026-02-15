@@ -1,5 +1,5 @@
 P_NAME=cub3d
-CFLAGS=-Wall -Wextra -Werror -O3
+CFLAGS=-Wall -Wextra -Werror -O3 #-fsanitize=address -g
 HEADER=cub3d.h
 P_SRC=main.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c \
 draw_routines.c game_loop.c key_ops.c vector_ops.c movement.c rendering.c cleanup.c \
