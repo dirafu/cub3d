@@ -118,8 +118,8 @@ int	main(void)
 			"111111",
 			"100001",
 			"110101",
-			"100001",
-			"11N001",
+			"10N001",
+			"110001",
 			"111111",
 			NULL
 			};
@@ -129,9 +129,6 @@ int	main(void)
 	data.player.fov_scale = tanf(FOV / 2.0 * (M_PI / 180.0f));
 	if (!init(&data.x_data) || !read_wall_textures(&data))
 		return (free_data(&data), print_error(), 1);
-	//mlx_put_image_to_window(data.x_data.xconn, data.x_data.win, data.textures[0].img, 0, 0);
-	//while(1) sleep(3600);
-	//return (0);
 	set_default_keybindings(data.input.keybindings);
 	set_player(map, &data.player);
 	data.ceiling_color = 0x1980a6;

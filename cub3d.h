@@ -15,7 +15,7 @@
 
 # define RES_X 640
 # define RES_Y 480
-# define FOV 90
+# define FOV 66
 # define MAX_SIMULTANEOUS_KEYS 10
 
 typedef enum actions

@@ -19,6 +19,7 @@ void	fill_render_info(t_render_facilities *rf,
 	rf->step_x = ((raydir->x < 0) * -2) + 1;
 	rf->step_y = ((raydir->y < 0) * -2) + 1;
 	rf->overall_number_of_steps = 0;
+	rf->tex_x = 0;
 }
 
 static void	do_step(t_point2d *raydir, t_render_facilities *rf)
@@ -38,7 +39,7 @@ static void	do_step(t_point2d *raydir, t_render_facilities *rf)
 		rf->next_y += rf->t_y;
 		rf->y += rf->step_y;
 		rf->hit = HORIZONTAL;
-		if (raydir->x < 0)
+		if (raydir->y < 0)
 			rf->hit = HIT_NORTH;
 		else
 			rf->hit = HIT_SOUTH;
@@ -63,16 +64,14 @@ void	cast_ray(t_data *data, t_point2d raydir, char **map, int x)
 	if (rf.hit == HIT_EAST || rf.hit == HIT_WEST)
 	{
 		rf.wall_height = data->x_data.res[1] / (rf.next_x - rf.t_x);
-		rf.tex_x = data->player.pos.x + raydir.x * (rf.next_x - rf.t_x);
+		rf.tex_x = data->player.pos.y + raydir.y * (rf.next_x - rf.t_x);
 	}
 	else if (rf.hit == HIT_NORTH || rf.hit == HIT_SOUTH)
 	{
 		rf.wall_height = data->x_data.res[1] / (rf.next_y - rf.t_y);
-		rf.tex_x = data->player.pos.y + raydir.y * (rf.next_y - rf.t_y);
+		rf.tex_x = data->player.pos.x + raydir.x * (rf.next_y - rf.t_y);
 	}
 	rf.tex_x -= floorf(rf.tex_x);
-	printf("tex_x [%f]\n", rf.tex_x);
-	rf.tex_x = 0.5;
 	put_wall_bar_on_img(x, data, &rf);
 }
 

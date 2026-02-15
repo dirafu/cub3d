@@ -20,7 +20,6 @@ int	key_down(int keysym, t_input *input)
 {
 	int	i;
 
-	//printf("key pressed down\n");
 	i = 0;
 	while (i < ACT_COUNT)
 	{
@@ -51,9 +50,9 @@ void	handle_keys(t_data *data)
 
 	d_t = data->time_data.time_d;
 	if (data->input.actions[ACT_LEFT])
-		rotate_player(&data->player, 80.0f * d_t);
+		rotate_player(&data->player, 90.0f * d_t);
 	else if (data->input.actions[ACT_RIGHT])
-		rotate_player(&data->player, -80.0f * d_t);
+		rotate_player(&data->player, -90.0f * d_t);
 	if (data->input.actions[ACT_FORWARD])
 		step_player(&data->player, 2.0f * d_t, PARALLEL);
 	else if (data->input.actions[ACT_BACKWARD])
