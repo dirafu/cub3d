@@ -1,4 +1,4 @@
-P_NAME=cub3d
+P_NAME=cub3D
 CFLAGS=-Wall -Wextra -Werror -O3 #-fsanitize=address -g
 HEADER=cub3d.h
 P_SRC=main.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c \
