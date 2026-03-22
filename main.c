@@ -91,28 +91,6 @@ void	set_player(char **map, t_player *player)
 	player->radius = PLAYER_RADIUS;
 }
 
-bool	read_wall_textures(t_data *data)
-{
-	size_t		i;
-	static char	*texture_filenames[] = {
-		"wall_textures/N_wall.xpm",
-		"wall_textures/W_wall.xpm",
-		"wall_textures/S_wall.xpm",
-		"wall_textures/E_wall.xpm"
-	};
-
-	i = 0;
-	while (i < TEXTURE_COUNT)
-	{
-		data->textures[i].img = mlx_xpm_file_to_image(data->x_data.xconn, texture_filenames[i], &(data->textures[i].res_x), &(data->textures[i].res_y));
-		if (!data->textures[i].img)
-			return (false);
-		data->textures[i].addr = mlx_get_data_addr(data->textures[i].img, &data->textures[i].bpp, &data->textures[i].size_line, &data->textures[i].endian);
-		i++;
-	}
-	return (true);
-}
-
 int	main(void)
 {
 	char	*map[7] = {

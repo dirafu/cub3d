@@ -108,4 +108,8 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
+size_t	ft_num_str_width(int num);
+
+char	*ft_itoa_with_leading_zeroes(int num, size_t width);
+
 #endif

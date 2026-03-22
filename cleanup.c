@@ -7,9 +7,9 @@ void	free_textures(t_data *data)
 	i = 0;
 	while (i < TEXTURE_COUNT)
 	{
-		if (data->textures[i].img && data->x_data.xconn)
-			mlx_destroy_image(data->x_data.xconn, data->textures[i].img);
-		data->textures[i].img = NULL;
+		if (data->wall_textures[i].img && data->x_data.xconn)
+			mlx_destroy_image(data->x_data.xconn, data->wall_textures[i].img);
+		data->wall_textures[i].img = NULL;
 	}
 }
 

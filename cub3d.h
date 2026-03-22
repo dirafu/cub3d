@@ -62,6 +62,14 @@ typedef	struct s_point2d
 	float	y;
 }	t_point2d;
 
+//animation is stored in ./{"$dir"} directory and named like frame number + ".xpm" with leading zeroes;
+//e.g. from 00.xpm to 41.xpm in case num_of_frames is 42
+typedef	struct s_animated_sprites_info
+{
+	size_t	num_of_frames;
+	char	*dir;
+}	t_animated_sprites_info;
+
 typedef struct s_img_data
 {
 	void		*img;
@@ -77,6 +85,7 @@ typedef struct s_x_data
 {
 	t_img_data	img_data[2];
 	t_img_data	*curr_framebuf;
+	float		zbuff[RES_X];
 	void		*xconn;
 	void		*win;
 	int			framebuf_sel;
@@ -116,7 +125,8 @@ typedef	struct s_data
 	t_x_data		x_data;
 	t_player		player;
 	t_input			input;
-	t_img_data		textures[TEXTURE_COUNT];
+	t_img_data		wall_textures[TEXTURE_COUNT];
+	t_img_data		**sprites_textures;
 	char			**map;
 	int				ceiling_color;
 	int				floor_color;
@@ -147,32 +157,7 @@ void	handle_keys(t_data *data);
 
 //movement
 void	rotate_player(t_player *player, float angle);
-// void	step_player(t_player *player, float step_size, enum direction dir);
 void	step_player(t_player *player, char **map, float step_size, enum direction dir);
-// {
-// 	t_point2d	step;
-// 	t_point2d	new_pos;
-// 	float		tmp;
-
-// 	step = player->dir;
-// 	if (dir == PERPENDICULAR)
-// 	{
-// 		tmp = -step.x;
-// 		step.x = step.y;
-// 		step.y = tmp;
-// 	}
-// 	step = vec2d_mul(step, 0.05f);
-// 	while (step_size > 0)
-// 	{
-// 		step_size -= 0.05f;
-// 		new_pos = vec2d_sum(player->pos, step);
-// 		if (map[-(int)new_pos.y][(int)new_pos.x] == '1')
-// 		{
-// 			return ;
-// 		}
-// 		player->pos = new_pos;
-// 	}
-// }
 
 //vector op-s
 t_point2d	vec2d_sum(t_point2d p1, t_point2d p2);
@@ -189,6 +174,7 @@ int		get_img_px_color(t_img_data *image, int x, int y);
 void	fill_render_info(t_render_facilities *rf, t_player *player, t_point2d *raydir);
 void	cast_ray(t_data *data, t_point2d raydir, char **map, int x);
 void	draw_frame(t_data *data);
+void	draw_walls(t_data *data);
 
 //cleanup
 void	free_data(t_data *data);
@@ -200,5 +186,11 @@ int		game_loop(t_data *data);
 //misc
 uint64_t	ft_get_time_us(void);
 void		print_error();
+
+//textures initialization
+bool	read_resources(t_data *data);
+bool	read_sprites(t_data *data);
+bool	read_wall_textures(t_data *data);
+char	*get_full_frame_filename(char *dir, size_t num_width, size_t frame_num);
 
 #endif
