@@ -9,22 +9,17 @@ void	rotate_player(t_player *player, float angle)
 	player->cam_plane = vec2d_mul(player->cam_plane, player->fov_scale);
 }
 
-t_point2d	set_step_and_radius(t_point2d *step, t_player *player, float step_size, enum direction dir)
+t_point2d	get_direction(t_point2d player_dir, enum direction dir)
 {
-	float		tmp;
-	t_point2d	radius;
+	float	tmp;
 
-	*step = player->dir;
 	if (dir == PERPENDICULAR)
 	{
-		tmp = -step->x;
-		step->x = step->y;
-		step->y = tmp;
+		tmp = -player_dir.x;
+		player_dir.x = player_dir.y;
+		player_dir.y = tmp;
 	}
-	*step = vec2d_mul(*step, ((step_size < 0) * -2 + 1));
-	radius = vec2d_mul(*step, player->radius);
-	*step = vec2d_mul(*step, 0.05f);
-	return (radius);
+	return (player_dir);
 }
 
 void	step_player(t_player *player, char **map, float step_size, enum direction dir)
@@ -32,9 +27,14 @@ void	step_player(t_player *player, char **map, float step_size, enum direction d
 	t_point2d	step;
 	t_point2d	new_pos;
 	t_point2d	radius;
+	int			sign;
 
-	radius = set_step_and_radius(&step, player, step_size, dir);
-	step_size *= ((step_size < 0) * -2 + 1);
+	sign = ((step_size < 0) * -2 + 1);
+	step = get_direction(player->dir, dir);
+	step = vec2d_mul(step, sign);
+	radius = vec2d_mul(step, player->radius);
+	step = vec2d_mul(step, 0.05f);
+	step_size *= sign;
 	while (step_size > 0)
 	{
 		step_size -= 0.05f;
