@@ -36,7 +36,7 @@ static float	get_hit_dist(t_render_facilities *rf)
 	return (hit_dist);
 }
 
-void	cast_ray(t_data *data, t_point2d raydir, char **map, int x)
+void	cast_ray(t_data *data, t_point2d raydir, int x)
 {
 	t_render_facilities	rf;
 
@@ -47,7 +47,8 @@ void	cast_ray(t_data *data, t_point2d raydir, char **map, int x)
 		rf.overall_number_of_steps++;
 		// if (rf.overall_number_of_steps >= map.height + map.width)
 		// 	return;
-		if (map[-rf.y][rf.x] != '1')
+
+		if (data->map[-rf.y][rf.x].type != CELL_WALL)
 			rf.hit = HIT_NONE;
 	}
 	data->x_data.zbuff[x - 1] = get_hit_dist(&rf);
@@ -69,7 +70,7 @@ void	draw_walls(t_data *data)
 	{
 		cast_ray(data, vec2d_sum(data->player.dir,
 				vec2d_mul(data->player.cam_plane,
-					(float)x / data->x_data.res[0] * 2 - 1)), data->map, x);
+					(float)x / data->x_data.res[0] * 2 - 1)), x);
 	}
 }
 

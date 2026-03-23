@@ -62,14 +62,6 @@ typedef	struct s_point2d
 	float	y;
 }	t_point2d;
 
-//animation is stored in ./{"$dir"} directory and named like frame number + ".xpm" with leading zeroes;
-//e.g. from 00.xpm to 41.xpm in case num_of_frames is 42
-typedef	struct s_animated_sprites_info
-{
-	size_t	num_of_frames;
-	char	*dir;
-}	t_animated_sprites_info;
-
 typedef struct s_img_data
 {
 	void		*img;
@@ -81,6 +73,22 @@ typedef struct s_img_data
 	int			res_y;
 }	t_img_data;
 
+typedef	struct s_animated_sprite
+{
+	t_img_data		*frames;
+	size_t			num_of_frames;
+}	t_animated_sprite;
+
+//animation is stored in ./{"$dir"} directory and named like frame number + ".xpm" with leading zeroes;
+//e.g. from 00.xpm to 41.xpm in case num_of_frames is 42
+typedef	struct s_animated_sprites_info
+{
+	size_t	num_of_frames;
+	char	*dir;
+	char	sprite_id;
+}	t_animated_sprites_info;
+
+
 typedef struct s_x_data
 {
 	t_img_data	img_data[2];
@@ -91,6 +99,24 @@ typedef struct s_x_data
 	int			framebuf_sel;
 	int			res[2];
 }	t_x_data;
+
+typedef enum
+{
+	CELL_TERMINATOR = 0,
+	CELL_WALL,
+	CELL_EMPTY,
+	CELL_DOOR,
+	CELL_SPRITE,
+	CELL_NONE
+}	t_map_cell_type;
+
+typedef	struct s_map
+{
+	t_map_cell_type		type;
+	t_animated_sprite	*sprite_animation;
+	float				door_open_factor;
+	char				sprite_id;
+}	t_map;
 
 typedef	struct s_player
 {
@@ -121,15 +147,16 @@ typedef	struct s_time_data
 
 typedef	struct s_data
 {
-	t_time_data		time_data;
-	t_x_data		x_data;
-	t_player		player;
-	t_input			input;
-	t_img_data		wall_textures[TEXTURE_COUNT];
-	t_img_data		**sprites_textures;
-	char			**map;
-	int				ceiling_color;
-	int				floor_color;
+	t_time_data			time_data;
+	t_x_data			x_data;
+	t_player			player;
+	t_input				input;
+	t_img_data			wall_textures[TEXTURE_COUNT];
+	t_img_data			**sprites_textures;
+	t_animated_sprite	*sprites;
+	t_map				**map;
+	int					ceiling_color;
+	int					floor_color;
 }	t_data;
 
 typedef	struct s_render_facilities
@@ -148,7 +175,6 @@ typedef	struct s_render_facilities
 	float		tex_x;
 }	t_render_facilities;
 
-
 //input
 void	set_default_keybindings(t_keybindings *keybindings);
 int		key_down(int keysym, t_input *input);
@@ -157,7 +183,7 @@ void	handle_keys(t_data *data);
 
 //movement
 void	rotate_player(t_player *player, float angle);
-void	step_player(t_player *player, char **map, float step_size, enum direction dir);
+void	step_player(t_player *player, t_map **map, float step_size, enum direction dir);
 
 //vector op-s
 t_point2d	vec2d_sum(t_point2d p1, t_point2d p2);
@@ -172,13 +198,16 @@ int		get_img_px_color(t_img_data *image, int x, int y);
 
 //rendering
 void	fill_render_info(t_render_facilities *rf, t_player *player, t_point2d *raydir);
-void	cast_ray(t_data *data, t_point2d raydir, char **map, int x);
+void	cast_ray(t_data *data, t_point2d raydir, int x);
 void	draw_frame(t_data *data);
 void	draw_walls(t_data *data);
 
 //cleanup
 void	free_data(t_data *data);
 int		exit_handler(t_data *data);
+void	free_textures(t_data *data);
+void	free_xdata(t_data *data);
+void	free_map(t_data *data);
 
 //main game loop
 int		game_loop(t_data *data);
@@ -192,5 +221,7 @@ bool	read_resources(t_data *data);
 bool	read_sprites(t_data *data);
 bool	read_wall_textures(t_data *data);
 char	*get_full_frame_filename(char *dir, size_t num_width, size_t frame_num);
+
+t_map	**test_mock_map_structure_prep(char **map);
 
 #endif

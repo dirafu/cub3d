@@ -46,25 +46,51 @@ char	*get_full_frame_filename(char *dir, size_t num_width, size_t frame_num)
 	return(full_filename);	
 }
 
+void	assign_sprites_to_map(t_animated_sprites_info *info, t_data *data)
+{
+	size_t	i;
+	size_t	j;
+	size_t	k;
+
+	i = 0;
+	while (info[i].dir)
+	{
+		j = 0;
+		while (data->map[j])
+		{
+			k = 0;
+			while (data->map[j][k].type != CELL_TERMINATOR)
+			{
+				if (data->map[j][k].sprite_id == info[i].sprite_id)
+					data->map[j][k].sprite_animation = &(data->sprites[i]);
+				k++;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
 bool	read_sprites(t_data *data)
 {
 	//just as an example, probably it will be list instead of array
 	static t_animated_sprites_info	sprites_info[3] = {
-		{39, "doge"},
-		{49, "soldier"},
-		{-1, NULL}
+		{39, "doge", 'o'},
+		{49, "soldier", 's'},
+		{-1, NULL, '\0'}
 	};
 	static size_t	number_of_sprites = 2;
 	size_t			i = 0;
 
-	data->sprites_textures = ft_calloc(number_of_sprites, sizeof(*(data->sprites_textures)));
-	if (!data->sprites_textures)
+	data->sprites = ft_calloc(number_of_sprites + 1, sizeof(*(data->sprites)));
+	if (!data->sprites)
 		return (false);
 		//todo: handle properly
 	while (i < number_of_sprites)
 	{
-		data->sprites_textures[i] = ft_calloc(sprites_info[i].num_of_frames + 1, sizeof(**(data->sprites_textures)));
-		if (!(data->sprites_textures)[i])
+		data->sprites[i].num_of_frames = sprites_info[i].num_of_frames;
+		data->sprites[i].frames = ft_calloc(sprites_info[i].num_of_frames, sizeof(*(data->sprites->frames)));
+		if (!data->sprites[i].frames)
 			return (false);
 			//todo: handle properly
 		i++;
@@ -84,19 +110,21 @@ bool	read_sprites(t_data *data)
 			if (!filename)
 				return (false);
 				//todo: handle properly
-			data->sprites_textures[i][j].img = mlx_xpm_file_to_image(data->x_data.xconn, filename,
-				&(data->sprites_textures[i][j].res_x), &(data->sprites_textures[i][j].res_y));
+			data->sprites[i].frames[j].img = mlx_xpm_file_to_image(data->x_data.xconn, filename,
+				&(data->sprites[i].frames[j].res_x), &(data->sprites[i].frames[j].res_y));
 			free(filename);
-			if (!data->sprites_textures[i][j].img)
+			if (!data->sprites[i].frames[j].img)
 				return (false);
 				//todo: handle properly
-			data->sprites_textures[i][j].addr = mlx_get_data_addr(data->sprites_textures[i][j].img,
-				&(data->sprites_textures[i][j].bpp), &(data->sprites_textures[i][j].size_line),
-				&(data->sprites_textures[i][j].endian));
+			data->sprites[i].frames[j].addr = mlx_get_data_addr(data->sprites[i].frames[j].img,
+				&(data->sprites[i].frames[j].bpp), &(data->sprites[i].frames[j].size_line),
+				&(data->sprites[i].frames[j].endian));
 			j++;
+			assign_sprites_to_map(sprites_info, data);
 		}
 		i++;
 	}
+
 	return (true);
 }
 

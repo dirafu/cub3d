@@ -1,45 +1,48 @@
 #include "cub3d.h"
 
-void	free_textures(t_data *data)
+void	free_map(t_data *data)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < TEXTURE_COUNT)
+	while (data->map[i])
 	{
-		if (data->wall_textures[i].img && data->x_data.xconn)
-			mlx_destroy_image(data->x_data.xconn, data->wall_textures[i].img);
-		data->wall_textures[i].img = NULL;
+		free(data->map[i]);
+		data->map[i] = NULL;
+		i++;
 	}
+	free(data->map);
+	data->map = NULL;
+}
+
+void	free_sprites(t_data *data)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (data->sprites[i].frames)
+	{
+		j = 0;
+		while (j < data->sprites[i].num_of_frames)
+		{
+			mlx_destroy_image(data->x_data.xconn, data->sprites[i].frames[j].img);
+			data->sprites[i].frames[j].img = NULL;
+			j++;
+		}
+		free(data->sprites[i].frames);
+		data->sprites[i].frames = NULL;
+		i++;
+	}
+	free(data->sprites);
+	data->sprites = NULL;
 }
 
 void	free_data(t_data *data)
 {
-	int	i;
-
-	i = 0;
-	if (data->x_data.win && data->x_data.xconn)
-	{
-		mlx_destroy_window(data->x_data.xconn, data->x_data.win);
-		data->x_data.win = NULL;
-	}
-	while (i < 2)
-	{
-		if (data->x_data.img_data[i].img && data->x_data.xconn)
-		{
-			mlx_destroy_image(data->x_data.xconn, data->x_data.img_data[i].img);
-			data->x_data.img_data[i].img = NULL;
-		}
-		i++;
-	}
-	free_textures(data);
-	if (data->x_data.xconn)
-	{
-		mlx_destroy_display(data->x_data.xconn);
-		free(data->x_data.xconn);
-		data->x_data.xconn = NULL;
-	}
-	data->x_data.curr_framebuf = NULL;
+	free_map(data);
+	free_sprites(data);
+	free_xdata(data);
 }
 
 void	print_error(void)
