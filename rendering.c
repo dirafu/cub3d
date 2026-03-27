@@ -51,8 +51,8 @@ void	cast_ray(t_data *data, t_point2d raydir, int x)
 		if (data->map[-rf.y][rf.x].type != CELL_WALL)
 			rf.hit = HIT_NONE;
 	}
-	data->x_data.zbuff[x - 1] = get_hit_dist(&rf);
-	rf.wall_height = data->x_data.res[1] / data->x_data.zbuff[x - 1];
+	data->x_data.zbuff[x] = get_hit_dist(&rf);
+	rf.wall_height = data->x_data.res[1] / data->x_data.zbuff[x];
 	if (rf.hit == HIT_EAST || rf.hit == HIT_WEST)
 		rf.tex_x = data->player.pos.y + raydir.y * (rf.next_x - rf.t_x);
 	else if (rf.hit == HIT_NORTH || rf.hit == HIT_SOUTH)
@@ -66,11 +66,27 @@ void	draw_walls(t_data *data)
 	int			x;
 
 	x = 0;
-	while (x++ < data->x_data.res[0])
+	while (x < data->x_data.res[0])
 	{
 		cast_ray(data, vec2d_sum(data->player.dir,
 				vec2d_mul(data->player.cam_plane,
 					(float)x / data->x_data.res[0] * 2 - 1)), x);
+		x++;
+	}
+}
+
+void	switch_sprites_frames(t_time_data *time_data, t_sprite *sprites)
+{
+	while (sprites->animation)
+	{
+		if (time_data->last_frame_time - sprites->last_update_t > sprites->animation->frame_duration)
+		{
+			sprites->last_update_t = time_data->last_frame_time;
+			sprites->curr_frame++;
+		}
+		if (sprites->curr_frame >= sprites->animation->num_of_frames)
+			sprites->curr_frame = 0;
+		sprites++;
 	}
 }
 
@@ -80,6 +96,8 @@ void	draw_frame(t_data *data)
 
 	x_d = &(data->x_data);
 	draw_walls(data);
+	switch_sprites_frames(&(data->time_data), data->sprites);
+	draw_sprites(data);
 	mlx_put_image_to_window(x_d->xconn,
 		x_d->win, x_d->curr_framebuf->img, 0, 0);
 	mlx_do_sync(x_d->xconn);

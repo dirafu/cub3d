@@ -15,9 +15,10 @@
 
 # define RES_X 640
 # define RES_Y 480
-# define FOV 66
+# define FOV 55
 # define MAX_SIMULTANEOUS_KEYS 10
 # define PLAYER_RADIUS 0.1f
+# define A_FRAME_DUR_U 1000000 * 0.2f
 
 typedef enum actions
 {
@@ -73,11 +74,30 @@ typedef struct s_img_data
 	int			res_y;
 }	t_img_data;
 
-typedef	struct s_animated_sprite
+//array of all the loaded sprites variations (in data->sprites_animations)
+typedef	struct s_sprite_animation
 {
 	t_img_data		*frames;
 	size_t			num_of_frames;
-}	t_animated_sprite;
+	uint64_t		frame_duration;
+}	t_sprite_animation;
+
+//array of all the individual sprites on the map (in data->sprites)
+typedef	struct s_sprite
+{
+	t_sprite_animation	*animation;
+	t_point2d			pos;
+	uint64_t			last_update_t;
+	size_t				curr_frame;
+}	t_sprite;
+
+//array of t_sprite * sorted by Y coord with transformed coordinates relative to player pos
+typedef	struct s_sprite_rendering_view
+{
+	t_sprite			*sprite;
+	t_point2d			pos_transformed;
+	float				projected_x;
+}	t_sprite_rendering_view;
 
 //animation is stored in ./{"$dir"} directory and named like frame number + ".xpm" with leading zeroes;
 //e.g. from 00.xpm to 41.xpm in case num_of_frames is 42
@@ -87,7 +107,6 @@ typedef	struct s_animated_sprites_info
 	char	*dir;
 	char	sprite_id;
 }	t_animated_sprites_info;
-
 
 typedef struct s_x_data
 {
@@ -113,7 +132,7 @@ typedef enum
 typedef	struct s_map
 {
 	t_map_cell_type		type;
-	t_animated_sprite	*sprite_animation;
+	t_sprite			*sprite;
 	float				door_open_factor;
 	char				sprite_id;
 }	t_map;
@@ -123,6 +142,7 @@ typedef	struct s_player
 	t_point2d	dir;
 	t_point2d	pos;
 	t_point2d	cam_plane;
+	t_point2d	cam_plane_normalized;
 	float		radius;
 	float		fov_scale;
 }	t_player;
@@ -147,16 +167,17 @@ typedef	struct s_time_data
 
 typedef	struct s_data
 {
-	t_time_data			time_data;
-	t_x_data			x_data;
-	t_player			player;
-	t_input				input;
-	t_img_data			wall_textures[TEXTURE_COUNT];
-	t_img_data			**sprites_textures;
-	t_animated_sprite	*sprites;
-	t_map				**map;
-	int					ceiling_color;
-	int					floor_color;
+	t_time_data				time_data;
+	t_x_data				x_data;
+	t_player				player;
+	t_input					input;
+	t_img_data				wall_textures[TEXTURE_COUNT];
+	t_sprite_animation		*sprites_animations;
+	t_sprite				*sprites;
+	t_sprite_rendering_view	*sprites_zsorted;
+	t_map					**map;
+	int						ceiling_color;
+	int						floor_color;
 }	t_data;
 
 typedef	struct s_render_facilities
@@ -187,6 +208,7 @@ void	step_player(t_player *player, t_map **map, float step_size, enum direction 
 
 //vector op-s
 t_point2d	vec2d_sum(t_point2d p1, t_point2d p2);
+t_point2d	vec2d_sub(t_point2d p1, t_point2d p2);
 t_point2d	vec2d_mul(t_point2d p1, float n);
 t_point2d	vec2d_rotate_by_angle(t_point2d p1, float angle);
 t_point2d	vec2d_normalize(t_point2d p1);
@@ -201,6 +223,7 @@ void	fill_render_info(t_render_facilities *rf, t_player *player, t_point2d *rayd
 void	cast_ray(t_data *data, t_point2d raydir, int x);
 void	draw_frame(t_data *data);
 void	draw_walls(t_data *data);
+void	draw_sprites(t_data *data);
 
 //cleanup
 void	free_data(t_data *data);
@@ -208,6 +231,7 @@ int		exit_handler(t_data *data);
 void	free_textures(t_data *data);
 void	free_xdata(t_data *data);
 void	free_map(t_data *data);
+void	free_sprites_array(t_data *data);
 
 //main game loop
 int		game_loop(t_data *data);

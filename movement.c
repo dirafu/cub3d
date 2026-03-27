@@ -6,6 +6,7 @@ void	rotate_player(t_player *player, float angle)
 	player->dir = vec2d_normalize(player->dir);
 	player->cam_plane.y = -player->dir.x;
 	player->cam_plane.x = player->dir.y;
+	player->cam_plane_normalized = player->cam_plane;
 	player->cam_plane = vec2d_mul(player->cam_plane, player->fov_scale);
 }
 

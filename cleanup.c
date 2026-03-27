@@ -5,7 +5,8 @@ void	free_map(t_data *data)
 	size_t	i;
 
 	i = 0;
-	while (data->map[i])
+
+	while (data && data->map && data->map[i])
 	{
 		free(data->map[i]);
 		data->map[i] = NULL;
@@ -21,33 +22,35 @@ void	free_sprites(t_data *data)
 	size_t	j;
 
 	i = 0;
-	while (data->sprites[i].frames)
+	while (data && data->sprites_animations && data->sprites_animations[i].frames)
 	{
 		j = 0;
-		while (j < data->sprites[i].num_of_frames)
+		while (j < data->sprites_animations[i].num_of_frames)
 		{
-			mlx_destroy_image(data->x_data.xconn, data->sprites[i].frames[j].img);
-			data->sprites[i].frames[j].img = NULL;
+			if (data->x_data.xconn && data->sprites_animations[i].frames[j].img)
+				mlx_destroy_image(data->x_data.xconn, data->sprites_animations[i].frames[j].img);
+			data->sprites_animations[i].frames[j].img = NULL;
 			j++;
 		}
-		free(data->sprites[i].frames);
-		data->sprites[i].frames = NULL;
+		free(data->sprites_animations[i].frames);
+		data->sprites_animations[i].frames = NULL;
 		i++;
 	}
-	free(data->sprites);
-	data->sprites = NULL;
+	free(data->sprites_animations);
+	data->sprites_animations = NULL;
 }
 
 void	free_data(t_data *data)
 {
 	free_map(data);
 	free_sprites(data);
+	free_sprites_array(data);
 	free_xdata(data);
 }
 
 void	print_error(void)
 {
-	perror("Cub3d: an error occured:");
+	perror("Cub3d: an error occured");
 }
 
 int	exit_handler(t_data *data)

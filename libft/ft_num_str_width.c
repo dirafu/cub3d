@@ -24,5 +24,5 @@ size_t	ft_num_str_width(int num)
 		num /= 10;
 		len++;
 	}
-	return (num);
+	return (len);
 }
