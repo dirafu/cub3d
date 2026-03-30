@@ -19,7 +19,7 @@
 # define MAX_SIMULTANEOUS_KEYS 10
 # define PLAYER_RADIUS 0.1f
 # define A_FRAME_DUR_U 1000000 * 0.2f
-# define DOOR_AUTO_CLOSE_T 1000000 * 10
+# define DOOR_AUTO_CLOSE_T 1000000 * 5
 
 typedef enum actions
 {

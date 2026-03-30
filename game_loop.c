@@ -20,7 +20,6 @@ void	update_door_openness(t_map **a_d, size_t i, size_t *active_doors_count, t_t
 			a_d[i]->door_open_factor = 1.0f;
 			a_d[i]->door_status = DOOR_STATUS_OPENED;
 			a_d[i]->door_open_time = time_data->last_frame_time;
-			a_d[i] = a_d[--(*active_doors_count)];
 		}
 	}
 }

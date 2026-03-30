@@ -63,10 +63,7 @@ void	handle_doors_interactions(t_data *data)
 				data->active_doors[data->active_doors_count++] = door_cell;
 			}
 			if (door_cell->door_status == DOOR_STATUS_OPENED)
-			{
 				door_cell->door_status = DOOR_STATUS_CLOSING;
-				data->active_doors[data->active_doors_count++] = door_cell;
-			}
 		}
 	}
 }

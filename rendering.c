@@ -66,8 +66,6 @@ void	cast_ray(t_data *data, t_point2d raydir, int x)
 void	draw_walls(t_data *data)
 {
 	int			x;
-	// char c;
-	// t_x_data	*x_d = &(data->x_data);
 
 	x = 0;
 	while (x < data->x_data.res[0])
@@ -75,16 +73,6 @@ void	draw_walls(t_data *data)
 		cast_ray(data, vec2d_sum(data->player.dir,
 				vec2d_mul(data->player.cam_plane,
 					(float)x / data->x_data.res[0] * 2 - 1)), x);
-		// printf("casted [%d] ray\n", x);
-		// while (1)
-		// {
-		// 	c = getchar();
-		// 	if (c == '\n')
-		// 		break;
-		// }
-		// mlx_put_image_to_window(x_d->xconn,
-		// x_d->win, x_d->curr_framebuf->img, 0, 0);
-		// mlx_do_sync(x_d->xconn);
 		x++;
 	}
 }

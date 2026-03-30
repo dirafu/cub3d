@@ -47,11 +47,7 @@ static t_img_data *set_tx(t_data *data, t_render_facilities *rf)
 			|| (rf->passed_door->door_orientation == VERTICAL
 			&& ft_abs(rf->y - rf->door_y) == 1
 			&& rf->x == rf->door_x))
-		{
-			// printf("we're passed the doorway and now choosing suitable texture!\n");
 			tx = &data->door_textures[DOOR_TEX_SIDE];
-			//tx = &data->door_textures[DOOR_TEX_FACE];
-		}
 	}
 	return (tx);
 }
@@ -63,8 +59,6 @@ void	put_wall_bar_on_img(int x, t_data *data, t_render_facilities *rf)
 	int			wall_y;
 	t_img_data *tx;
 
-	// if (rf->passed_door)
-	// 			printf("passed_door is true\n");
 	tx = set_tx(data, rf);
 	i = 0;
 	y = (data->x_data.res[1] / 2) - rf->wall_height / 2;
