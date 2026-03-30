@@ -55,7 +55,9 @@ void	handle_doors_interactions(t_data *data)
 	{
 		door_pos = vec2d_sum(data->player.pos, data->player.dir);
 		door_cell = &(data->map[-((int)door_pos.y)][(int)door_pos.x]);
-		if (door_cell->type == CELL_DOOR)
+		if (door_cell->type == CELL_DOOR
+			&& &data->map[-(int)data->player.pos.y][(int)data->player.pos.x]
+			!= door_cell)
 		{
 			if (door_cell->door_status == DOOR_STATUS_CLOSED)
 			{
