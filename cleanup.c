@@ -12,8 +12,13 @@ void	free_map(t_data *data)
 		data->map[i] = NULL;
 		i++;
 	}
-	free(data->map);
-	data->map = NULL;
+	if (data)
+	{
+		free(data->map);
+		data->map = NULL;
+		free(data->active_doors);
+		data->active_doors = NULL;
+	}
 }
 
 void	free_sprites(t_data *data)

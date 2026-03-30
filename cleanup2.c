@@ -16,11 +16,19 @@ void	free_textures(t_data *data)
 	size_t	i;
 
 	i = 0;
-	while (i < TEXTURE_COUNT)
+	while (i < WALL_TEX_COUNT)
 	{
 		if (data->wall_textures[i].img && data->x_data.xconn)
 			mlx_destroy_image(data->x_data.xconn, data->wall_textures[i].img);
 		data->wall_textures[i].img = NULL;
+		i++;
+	}
+	i = 0;
+	while (i < DOOR_TEX_COUNT)
+	{
+		if (data->door_textures[i].img && data->x_data.xconn)
+			mlx_destroy_image(data->x_data.xconn, data->door_textures[i].img);
+		data->door_textures[i].img = NULL;
 		i++;
 	}
 }

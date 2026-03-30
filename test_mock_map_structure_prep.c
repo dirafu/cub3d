@@ -53,6 +53,13 @@ t_map	**test_mock_map_structure_prep(char **map)
 		while (map[i][j])
 		{
 			match_map_char(&(map_struct[i][j]), map[i][j]);
+			if (map_struct[i][j].type == CELL_DOOR)
+			{
+				if (map[i][j - 1] == '1' && map[i][j + 1] == '1')
+					map_struct[i][j].door_orientation = HORIZONTAL;
+				else
+					map_struct[i][j].door_orientation = VERTICAL;
+			}
 			j++;
 		}
 		i++;

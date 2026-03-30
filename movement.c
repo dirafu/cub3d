@@ -29,6 +29,7 @@ void	step_player(t_player *player, t_map **map, float step_size, enum direction 
 	t_point2d	new_pos;
 	t_point2d	radius;
 	int			sign;
+	t_map		*step_cell;
 
 	sign = ((step_size < 0) * -2 + 1);
 	step = get_direction(player->dir, dir);
@@ -40,7 +41,9 @@ void	step_player(t_player *player, t_map **map, float step_size, enum direction 
 	{
 		step_size -= 0.05f;
 		new_pos = vec2d_sum(player->pos, step);
-		if (map[-((int)(new_pos.y + radius.y))][(int)(new_pos.x + radius.x)].type == CELL_WALL)
+		step_cell = &map[-((int)(new_pos.y + radius.y))][(int)(new_pos.x + radius.x)];
+		if (step_cell->type == CELL_WALL
+			|| (step_cell->type == CELL_DOOR && step_cell->door_status != DOOR_STATUS_OPENED))
 			return ;
 		player->pos = new_pos;
 	}

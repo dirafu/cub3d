@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-static void	do_step(t_point2d *raydir, t_render_facilities *rf)
+void	do_step(t_point2d *raydir, t_render_facilities *rf)
 {
 	if (rf->next_x < rf->next_y)
 	{	
@@ -24,7 +24,7 @@ static void	do_step(t_point2d *raydir, t_render_facilities *rf)
 	}
 }
 
-static float	get_hit_dist(t_render_facilities *rf)
+float	get_hit_dist(t_render_facilities *rf)
 {
 	float	hit_dist;
 
@@ -43,6 +43,8 @@ void	cast_ray(t_data *data, t_point2d raydir, int x)
 	fill_render_info(&rf, &data->player, &raydir);
 	while (rf.hit == HIT_NONE)
 	{
+		if (data->map[-rf.y][rf.x].type == CELL_DOOR && draw_door(x, data, &rf, raydir))
+			return ;
 		do_step(&raydir, &rf);
 		rf.overall_number_of_steps++;
 		// if (rf.overall_number_of_steps >= map.height + map.width)
@@ -64,6 +66,8 @@ void	cast_ray(t_data *data, t_point2d raydir, int x)
 void	draw_walls(t_data *data)
 {
 	int			x;
+	// char c;
+	// t_x_data	*x_d = &(data->x_data);
 
 	x = 0;
 	while (x < data->x_data.res[0])
@@ -71,6 +75,16 @@ void	draw_walls(t_data *data)
 		cast_ray(data, vec2d_sum(data->player.dir,
 				vec2d_mul(data->player.cam_plane,
 					(float)x / data->x_data.res[0] * 2 - 1)), x);
+		// printf("casted [%d] ray\n", x);
+		// while (1)
+		// {
+		// 	c = getchar();
+		// 	if (c == '\n')
+		// 		break;
+		// }
+		// mlx_put_image_to_window(x_d->xconn,
+		// x_d->win, x_d->curr_framebuf->img, 0, 0);
+		// mlx_do_sync(x_d->xconn);
 		x++;
 	}
 }

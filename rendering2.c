@@ -20,6 +20,7 @@ void	fill_render_info(t_render_facilities *rf,
 	rf->step_y = ((raydir->y < 0) * -2) + 1;
 	rf->overall_number_of_steps = 0;
 	rf->tex_x = 0;
+	rf->passed_door = NULL;
 }
 
 t_point2d	transform_pos(t_player *player, t_sprite *sprite)

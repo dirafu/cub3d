@@ -5,35 +5,6 @@
 {'1', '1', '0', '0', 'N', '1'},
 {'1', '1', '1', '1', '1', '1'}*/
 
-void	*init(t_x_data *data)
-{
-	int	i;
-
-	i = 0;
-	data->res[0] = RES_X;
-	data->res[1] = RES_Y;
-	data->xconn = mlx_init();
-	if (!data->xconn)
-		return (NULL);
-	data->win = mlx_new_window(data->xconn, RES_X, RES_Y, "test");
-	if (!data->win)
-		return (NULL);
-	while (i < 2)
-	{
-		data->img_data[i].img = mlx_new_image(data->xconn, RES_X, RES_Y);
-		if (!data->img_data[i].img)
-			return (NULL);
-		data->img_data[i].addr = mlx_get_data_addr(data->img_data[i].img,
-				&(data->img_data[i].bpp),
-				&(data->img_data[i].size_line), &(data->img_data[i].endian));
-		data->img_data[i].res_x = data->res[0];
-		data->img_data[i].res_y = data->res[1];
-		i++;
-	}
-	data->curr_framebuf = &(data->img_data[(data->framebuf_sel)++ % 2]);
-	return (data);
-}
-
 bool	set_player_pt2(char c, t_player *player)
 {
 	if (c == 'N')
@@ -96,10 +67,10 @@ void	set_player(char **map, t_player *player)
 
 int	main(void)
 {
-	char	*map[7] = {
+		char	*map[7] = {
 			"111111",
 			"10s001",
-			"110101",
+			"11D101",
 			"10Nso1",
 			"110001",
 			"111111",
@@ -109,7 +80,7 @@ int	main(void)
 
 	data.player.fov_scale = tanf(FOV / 2.0 * (M_PI / 180.0f) * ((float)RES_X / RES_Y));
 	data.map = test_mock_map_structure_prep(map);
-	if (!init(&data.x_data) || !read_resources(&data))
+	if (!init(&data) || !read_resources(&data))
 		return (free_data(&data), print_error(), 1);
 	set_default_keybindings(data.input.keybindings);
 	set_player(map, &data.player);

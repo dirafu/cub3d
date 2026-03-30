@@ -14,6 +14,8 @@ void	set_default_keybindings(t_keybindings *keybindings)
 	keybindings[4].keysym = 97;
 	keybindings[5].action = ACT_STRAFE_RIGHT;
 	keybindings[5].keysym = 100;
+	keybindings[6].action = ACT_OPEN_DOOR;
+	keybindings[6].keysym = 32;
 }
 
 int	key_down(int keysym, t_input *input)
@@ -35,13 +37,38 @@ int	key_up(int keysym, t_input *input)
 	int	i;
 
 	i = 0;
-	while (i < ACT_COUNT)
+	while (i < ACT_COUNT * 2)
 	{
 		if (input->keybindings[i].keysym == keysym)
 			input->actions[input->keybindings[i].action] = false;
 		i++;
 	}
 	return (1);
+}
+
+void	handle_doors_interactions(t_data *data)
+{
+	t_point2d	door_pos;
+	t_map		*door_cell;
+
+	if (data->input.actions[ACT_OPEN_DOOR])
+	{
+		door_pos = vec2d_sum(data->player.pos, data->player.dir);
+		door_cell = &(data->map[-((int)door_pos.y)][(int)door_pos.x]);
+		if (door_cell->type == CELL_DOOR)
+		{
+			if (door_cell->door_status == DOOR_STATUS_CLOSED)
+			{
+				door_cell->door_status = DOOR_STATUS_OPENING;
+				data->active_doors[data->active_doors_count++] = door_cell;
+			}
+			if (door_cell->door_status == DOOR_STATUS_OPENED)
+			{
+				door_cell->door_status = DOOR_STATUS_CLOSING;
+				data->active_doors[data->active_doors_count++] = door_cell;
+			}
+		}
+	}
 }
 
 void	handle_keys(t_data *data)
@@ -61,4 +88,5 @@ void	handle_keys(t_data *data)
 		step_player(&data->player, data->map, 2.0f * d_t, PERPENDICULAR);
 	else if (data->input.actions[ACT_STRAFE_LEFT])
 		step_player(&data->player, data->map, -2.0f * d_t, PERPENDICULAR);
+	handle_doors_interactions(data);
 }

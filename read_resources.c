@@ -1,5 +1,25 @@
 #include "cub3d.h"
 
+bool	read_door_textures(t_data *data)
+{
+	size_t		i;
+	static char	*texture_filenames[] = {
+		"door_textures/face.xpm",
+		"door_textures/side.xpm",
+	};
+
+	i = 0;
+	while (i < DOOR_TEX_COUNT)
+	{
+		data->door_textures[i].img = mlx_xpm_file_to_image(data->x_data.xconn, texture_filenames[i], &(data->door_textures[i].res_x), &(data->door_textures[i].res_y));
+		if (!data->door_textures[i].img)
+			return (false);
+		data->door_textures[i].addr = mlx_get_data_addr(data->door_textures[i].img, &data->door_textures[i].bpp, &data->door_textures[i].size_line, &data->door_textures[i].endian);
+		i++;
+	}
+	return (true);
+}
+
 bool	read_wall_textures(t_data *data)
 {
 	size_t		i;
@@ -11,7 +31,7 @@ bool	read_wall_textures(t_data *data)
 	};
 
 	i = 0;
-	while (i < TEXTURE_COUNT)
+	while (i < WALL_TEX_COUNT)
 	{
 		data->wall_textures[i].img = mlx_xpm_file_to_image(data->x_data.xconn, texture_filenames[i], &(data->wall_textures[i].res_x), &(data->wall_textures[i].res_y));
 		if (!data->wall_textures[i].img)
@@ -62,34 +82,7 @@ t_sprite_animation	*get_animation(t_animated_sprites_info *info, t_sprite_animat
 	return (NULL);
 }
 
-//IT IS A DEAD FUNCTION THAT SHOULD BE DELETED
-// void	assign_sprites_to_map(t_animated_sprites_info *info, t_data *data)
-// {
-// 	size_t	i;
-// 	size_t	j;
-// 	size_t	k;
-
-// 	i = 0;
-// 	while (info[i].dir)
-// 	{
-// 		j = 0;
-// 		while (data->map[j])
-// 		{
-// 			k = 0;
-// 			while (data->map[j][k].type != CELL_TERMINATOR)
-// 			{
-// 				if (data->map[j][k].type == CELL_SPRITE
-// 					&& data->map[j][k].sprite_id == info[i].sprite_id)
-// 					data->map[j][k].sprite = &(data->sprites_animations[i]);
-// 				k++;
-// 			}
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// }
-
-size_t	count_sprites_on_map(t_map **map)
+size_t	count_map_cells(t_map **map, t_map_cell_type type)
 {
 	size_t	i;
 	size_t	j;
@@ -102,7 +95,7 @@ size_t	count_sprites_on_map(t_map **map)
 		j = 0;
 		while (map[i][j].type != CELL_TERMINATOR)
 		{
-			if (map[i][j].type == CELL_SPRITE)
+			if (map[i][j].type == type)
 				c++;
 			j++;
 		}
@@ -144,25 +137,12 @@ t_sprite	*init_sprites_array(t_data *data, t_animated_sprites_info *info)
 	size_t		sprite_c;
 	t_sprite	*sprites;
 
-	sprite_c = count_sprites_on_map(data->map);
+	sprite_c = count_map_cells(data->map, CELL_SPRITE);
 	sprites = ft_calloc(sprite_c + 1, sizeof(*(data->sprites)));
 	if (!sprites)
 		return(NULL);
 	link_sprites_to_map(data, sprites, info);
 	return (sprites);
-}
-
-t_sprite_rendering_view	*alloc_zsorted(t_data *data)
-{
-	// size_t					i;
-	size_t					sprite_c;
-	t_sprite_rendering_view	*s_view;
-
-	sprite_c = count_sprites_on_map(data->map);
-	s_view = ft_calloc(sprite_c + 1, sizeof(*s_view));
-	if (!s_view)
-		return (NULL);
-	return (s_view);
 }
 
 bool	read_sprites(t_data *data)
@@ -204,13 +184,11 @@ bool	read_sprites(t_data *data)
 			filename = get_full_frame_filename(sprites_info[i].dir, filename_width, j);
 			if (!filename)
 				return (false);
-				//todo: handle properly
 			data->sprites_animations[i].frames[j].img = mlx_xpm_file_to_image(data->x_data.xconn, filename,
 				&(data->sprites_animations[i].frames[j].res_x), &(data->sprites_animations[i].frames[j].res_y));
 			free(filename);
 			if (!data->sprites_animations[i].frames[j].img)
 				return (false);
-				//todo: handle properly
 			data->sprites_animations[i].frames[j].addr = mlx_get_data_addr(data->sprites_animations[i].frames[j].img,
 				&(data->sprites_animations[i].frames[j].bpp), &(data->sprites_animations[i].frames[j].size_line),
 				&(data->sprites_animations[i].frames[j].endian));
@@ -221,17 +199,14 @@ bool	read_sprites(t_data *data)
 	data->sprites = init_sprites_array(data, sprites_info);
 	if (!data->sprites)
 		return (false);
-		//todo: handle properly
-	data->sprites_zsorted = alloc_zsorted(data);
-	if (!data->sprites_zsorted)
-		return (false);
-		//todo: handle properly
 	return (true);
 }
 
 bool	read_resources(t_data *data)
 {
-	if (!read_wall_textures(data) || !read_sprites(data))
+	if (!read_wall_textures(data)
+		|| !read_door_textures(data)
+		|| !read_sprites(data))
 		return (false);
 	return (true);
 }
