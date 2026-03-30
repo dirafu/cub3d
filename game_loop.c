@@ -33,7 +33,8 @@ void	update_doors_state(t_data *data)
 	{
 		if (data->active_doors[i]->door_status == DOOR_STATUS_OPENED
 			&& (data->time_data.last_frame_time - data->active_doors[i]->door_open_time)
-			> DOOR_AUTO_CLOSE_T)
+			> DOOR_AUTO_CLOSE_T
+			&& &data->map[-(int)data->player.pos.y][(int)data->player.pos.x] != data->active_doors[i])
 			data->active_doors[i]->door_status = DOOR_STATUS_CLOSING;
 		update_door_openness(data->active_doors, i, &data->active_doors_count, &data->time_data);
 		i++;
