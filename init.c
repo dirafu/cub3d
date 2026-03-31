@@ -53,9 +53,17 @@ t_map	**alloc_active_doors(t_data *data)
 	return (active_doors);
 }
 
+bool	init_mouse(t_data *data)
+{
+	mlx_mouse_hide(data->x_data.xconn, data->x_data.win);
+	mlx_mouse_move(data->x_data.xconn, data->x_data.win,
+		data->x_data.res[0] / 2, data->x_data.res[1] / 2);
+	return (true);
+}
+
 bool	init(t_data *data)
 {
-	if (!x_init(&(data->x_data)))
+	if (!x_init(&(data->x_data)) || !init_mouse(data))
 		return (false);
 	data->sprites_zsorted = alloc_zsorted(data);
 	if (!data->sprites_zsorted)

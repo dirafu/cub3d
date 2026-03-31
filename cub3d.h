@@ -227,6 +227,7 @@ void	set_default_keybindings(t_keybindings *keybindings);
 int		key_down(int keysym, t_input *input);
 int		key_up(int keysym, t_input *input);
 void	handle_keys(t_data *data);
+int		handle_mouse(int x, int y, t_data *data);
 
 //movement
 void	rotate_player(t_player *player, float angle);
