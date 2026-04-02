@@ -16,7 +16,7 @@ void	match_map_char(t_map *map_cell, char cell_literal)
 {
 	if (cell_literal == '1')
 		map_cell->type = CELL_WALL;
-	else if (cell_literal == '0' || cell_literal == 'N')
+	else if (cell_literal == '0' || ft_strchr("NWES", cell_literal))
 		map_cell->type = CELL_EMPTY;
 	else if (cell_literal == 'D')
 		map_cell->type = CELL_DOOR;

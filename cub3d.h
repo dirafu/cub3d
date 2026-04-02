@@ -217,6 +217,7 @@ typedef	struct s_render_facilities
 	int			wall_height;
 	int			overall_number_of_steps;
 	float		tex_x;
+	bool		door_plate;
 	t_map		*passed_door;
 	int			door_x;
 	int			door_y;

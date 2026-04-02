@@ -21,6 +21,7 @@ void	fill_render_info(t_render_facilities *rf,
 	rf->overall_number_of_steps = 0;
 	rf->tex_x = 0;
 	rf->passed_door = NULL;
+	rf->door_plate = false;
 }
 
 t_point2d	transform_pos(t_player *player, t_sprite *sprite)
@@ -97,7 +98,7 @@ void	put_sprite_on_img_pt3(float tx_xy[2], int img_xy[2], t_data *data, t_sprite
 	color = get_img_px_color(&(r_v->sprite->animation->frames[r_v->sprite->curr_frame]), tx_xy[0], tx_xy[1]);
 	if (color != 0x980088 && img_xy[0] < data->x_data.res[0]
 		&& r_v->pos_transformed.y < data->x_data.zbuff[img_xy[0]])
-	put_px_on_img(&(data->x_data), img_xy[0], img_xy[1], color);
+		put_px_on_img(&(data->x_data), img_xy[0], img_xy[1], color);
 }
 
 void	put_sprite_on_img_pt2(int proj_res[2], int img_xy[2], t_data *data, t_sprite_rendering_view *r_v)

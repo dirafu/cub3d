@@ -39,7 +39,9 @@ static t_img_data *set_tx(t_data *data, t_render_facilities *rf)
 	t_img_data *tx;
 
 	tx = &data->wall_textures[rf->hit];
-	if (rf->passed_door)
+	if (rf->door_plate)
+		tx = &data->door_textures[DOOR_TEX_FACE];
+	else if (rf->passed_door)
 	{
 		if ((rf->passed_door->door_orientation == HORIZONTAL
 			&& ft_abs(rf->x - rf->door_x) == 1
