@@ -16,7 +16,6 @@
 # define RES_X 640
 # define RES_Y 480
 # define FOV 55
-# define MAX_SIMULTANEOUS_KEYS 10
 # define PLAYER_RADIUS 0.1f
 # define A_FRAME_DUR_U 1000000 * 0.2f
 # define DOOR_AUTO_CLOSE_T 1000000 * 5
@@ -30,6 +29,7 @@ typedef enum actions
 	ACT_STRAFE_LEFT,
 	ACT_STRAFE_RIGHT,
 	ACT_OPEN_DOOR,
+	ACT_TERMINATE,
 	ACT_COUNT
 }	t_actions;
 

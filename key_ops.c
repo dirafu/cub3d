@@ -16,6 +16,8 @@ void	set_default_keybindings(t_keybindings *keybindings)
 	keybindings[5].keysym = 100;
 	keybindings[6].action = ACT_OPEN_DOOR;
 	keybindings[6].keysym = 32;
+	keybindings[7].action = ACT_TERMINATE;
+	keybindings[7].keysym = 65307;
 }
 
 int	key_down(int keysym, t_input *input)
@@ -88,4 +90,6 @@ void	handle_keys(t_data *data)
 	else if (data->input.actions[ACT_STRAFE_LEFT])
 		step_player(&data->player, data->map, -2.0f * d_t, PERPENDICULAR);
 	handle_doors_interactions(data);
+	if (data->input.actions[ACT_TERMINATE])
+		exit_handler(data);
 }
