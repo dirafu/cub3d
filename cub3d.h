@@ -104,8 +104,10 @@ typedef	struct s_sprite
 typedef	struct s_sprite_rendering_view
 {
 	t_sprite			*sprite;
-	t_point2d			pos_transformed;
-	float				projected_x;
+	t_point2d			pos_tr;
+	float				p_x;
+	int					p_res[2];
+	int					center_x;
 }	t_sprite_rendering_view;
 
 //animation is stored in ./{"$dir"} directory and named like frame number + ".xpm" with leading zeroes;
