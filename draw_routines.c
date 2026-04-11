@@ -13,14 +13,14 @@ void	put_px_on_img(t_x_data *x_data, int x, int y, int color)
 	}
 }
 
-int		get_img_px_color(t_img_data *image, int x, int y)
+int	get_img_px_color(t_img_data *image, int x, int y)
 {
 	int		color;
 
 	color = 0;
 	if (image)
-		color = *((unsigned int *)(image->addr +
-			y * image->size_line + x * image->bpp / 8));
+		color = *((unsigned int *)(image->addr
+					+ y * image->size_line + x * image->bpp / 8));
 	return (color);
 }
 
@@ -34,9 +34,9 @@ int	get_texture_pixel(int wall_y, t_render_facilities *rf, t_img_data *tx)
 	return (get_img_px_color(tx, x, y));
 }
 
-static t_img_data *set_tx(t_data *data, t_render_facilities *rf)
+static t_img_data	*set_tx(t_data *data, t_render_facilities *rf)
 {
-	t_img_data *tx;
+	t_img_data	*tx;
 
 	tx = &data->wall_textures[rf->hit];
 	if (rf->door_plate)
@@ -44,11 +44,11 @@ static t_img_data *set_tx(t_data *data, t_render_facilities *rf)
 	else if (rf->passed_door)
 	{
 		if ((rf->passed_door->door_orientation == HORIZONTAL
-			&& ft_abs(rf->x - rf->door_x) == 1
-			&& rf->y == rf->door_y)
+				&& ft_abs(rf->x - rf->door_x) == 1
+				&& rf->y == rf->door_y)
 			|| (rf->passed_door->door_orientation == VERTICAL
-			&& ft_abs(rf->y - rf->door_y) == 1
-			&& rf->x == rf->door_x))
+				&& ft_abs(rf->y - rf->door_y) == 1
+				&& rf->x == rf->door_x))
 			tx = &data->door_textures[DOOR_TEX_SIDE];
 	}
 	return (tx);
@@ -75,7 +75,8 @@ void	put_wall(t_draw_ctx *ctx, t_render_facilities *rf, int wall_y, int y)
 	tx_x = rf->tex_x * ctx->tx->res_x;
 	y_step = (float)ctx->tx->res_y / rf->wall_height;
 	y_acc = wall_y * y_step;
-	tx_buff = (char *)(ctx->tx->addr) + tx_x * ctx->tx->bytes_pp + (ctx->tx->size_line * (int)y_acc);
+	tx_buff = (char *)(ctx->tx->addr) + tx_x * ctx->tx->bytes_pp
+		+ (ctx->tx->size_line * (int)y_acc);
 	bound = rf->wall_height + y;
 	if (bound > ctx->x_data->res[1])
 		bound = ctx->x_data->res[1];
@@ -84,7 +85,8 @@ void	put_wall(t_draw_ctx *ctx, t_render_facilities *rf, int wall_y, int y)
 		*(unsigned int *)(ctx->buff) = *(unsigned int *)tx_buff;
 		ctx->buff += ctx->size_line;
 		if ((int)y_acc != (int)(y_acc + y_step))
-			tx_buff += ((int)(y_acc + y_step) - (int)y_acc) * ctx->tx->size_line;
+			tx_buff += ((int)(y_acc + y_step)
+					- (int)y_acc) * ctx->tx->size_line;
 		y_acc += y_step;
 		(ctx->i)++;
 	}
@@ -96,7 +98,8 @@ void	put_wall_bar_on_img(int x, t_data *data, t_render_facilities *rf)
 	int			wall_y;
 	t_draw_ctx	ctx;
 
-	ctx.buff = (char *)(data->x_data.curr_framebuf->addr) + x * data->x_data.curr_framebuf->bytes_pp;
+	ctx.buff = (char *)(data->x_data.curr_framebuf->addr)
+		+ x * data->x_data.curr_framebuf->bytes_pp;
 	ctx.i = 0;
 	ctx.x_data = &data->x_data;
 	ctx.tx = set_tx(data, rf);
