@@ -50,7 +50,7 @@ size_t	transform_sprites_pos(t_sprite_rendering_view *r_view,
 		r_view[vis].pos_tr = transform_pos(player, &(sprites[i]));
 		if (r_view[vis].pos_tr.y > 0.1f)
 		{
-			r_view[vis].p_res[1] = res[0] / r_view[vis].pos_tr.y;
+			r_view[vis].p_res[1] = res[1] / r_view[vis].pos_tr.y;
 			r_view[vis].p_res[0] = r_view[vis].p_res[1]
 				* ((float)sprites[i].animation->frames->res_x
 					/ sprites[i].animation->frames->res_y);
