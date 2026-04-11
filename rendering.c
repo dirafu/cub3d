@@ -46,10 +46,6 @@ void	cast_ray(t_data *data, t_point2d raydir, int x)
 		if (data->map[-rf.y][rf.x].type == CELL_DOOR && draw_door(x, data, &rf, raydir))
 			return ;
 		do_step(&raydir, &rf);
-		rf.overall_number_of_steps++;
-		// if (rf.overall_number_of_steps >= map.height + map.width)
-		// 	return;
-
 		if (data->map[-rf.y][rf.x].type != CELL_WALL)
 			rf.hit = HIT_NONE;
 	}

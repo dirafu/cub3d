@@ -24,12 +24,12 @@ int		get_img_px_color(t_img_data *image, int x, int y)
 	return (color);
 }
 
-int	get_texture_pixel(int wall_y, t_data *data, t_render_facilities *rf, t_img_data *tx)
+int	get_texture_pixel(int wall_y, t_render_facilities *rf, t_img_data *tx)
 {
 	int	x;
 	int	y;
 
-	x = rf->tex_x * data->wall_textures[rf->hit].res_x;
+	x = rf->tex_x * tx->res_x;
 	y = (float)wall_y / rf->wall_height * tx->res_y;
 	return (get_img_px_color(tx, x, y));
 }
@@ -54,27 +54,61 @@ static t_img_data *set_tx(t_data *data, t_render_facilities *rf)
 	return (tx);
 }
 
+void	put_bg(t_draw_ctx *ctx, int bound, int color)
+{
+	while (ctx->i < bound)
+	{
+		*(unsigned int *)(ctx->buff) = color;
+		ctx->buff += ctx->size_line;
+		(ctx->i)++;
+	}
+}
+
+void	put_wall(t_draw_ctx *ctx, t_render_facilities *rf, int wall_y, int y)
+{
+	int		tx_x;
+	int		bound;
+	char	*tx_buff;
+	float	y_step;
+	float	y_acc;
+
+	tx_x = rf->tex_x * ctx->tx->res_x;
+	y_step = (float)ctx->tx->res_y / rf->wall_height;
+	y_acc = wall_y * y_step;
+	tx_buff = (char *)(ctx->tx->addr) + tx_x * ctx->tx->bytes_pp + (ctx->tx->size_line * (int)y_acc);
+	bound = rf->wall_height + y;
+	if (bound > ctx->x_data->res[1])
+		bound = ctx->x_data->res[1];
+	while (ctx->i < bound)
+	{
+		*(unsigned int *)(ctx->buff) = *(unsigned int *)tx_buff;
+		ctx->buff += ctx->size_line;
+		if ((int)y_acc != (int)(y_acc + y_step))
+			tx_buff += ((int)(y_acc + y_step) - (int)y_acc) * ctx->tx->size_line;
+		y_acc += y_step;
+		(ctx->i)++;
+	}
+}
+
 void	put_wall_bar_on_img(int x, t_data *data, t_render_facilities *rf)
 {
 	int			y;
-	int			i;
 	int			wall_y;
-	t_img_data *tx;
+	t_draw_ctx	ctx;
 
-	tx = set_tx(data, rf);
-	i = 0;
+	ctx.buff = (char *)(data->x_data.curr_framebuf->addr) + x * data->x_data.curr_framebuf->bytes_pp;
+	ctx.i = 0;
+	ctx.x_data = &data->x_data;
+	ctx.tx = set_tx(data, rf);
+	ctx.size_line = data->x_data.curr_framebuf->size_line;
 	y = (data->x_data.res[1] / 2) - rf->wall_height / 2;
-	while (i < y && ++i)
-		put_px_on_img(&data->x_data, x, i - 1, data->ceiling_color);
 	if (y < 0)
 		wall_y = -y;
 	else
-		wall_y = 0;
-	while (i < rf->wall_height + y && ++i)
 	{
-		put_px_on_img(&data->x_data, x, i - 1, get_texture_pixel(wall_y, data, rf, tx));
-		wall_y++;
+		put_bg(&ctx, y, data->ceiling_color);
+		wall_y = 0;
 	}
-	while (i < data->x_data.res[1] && ++i)
-		put_px_on_img(&data->x_data, x, i - 1, data->floor_color);
+	put_wall(&ctx, rf, wall_y, y);
+	put_bg(&ctx, data->x_data.res[1], data->floor_color);
 }

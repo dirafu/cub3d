@@ -15,6 +15,7 @@ bool	read_door_textures(t_data *data)
 		if (!data->door_textures[i].img)
 			return (false);
 		data->door_textures[i].addr = mlx_get_data_addr(data->door_textures[i].img, &data->door_textures[i].bpp, &data->door_textures[i].size_line, &data->door_textures[i].endian);
+		data->door_textures[i].bytes_pp = data->door_textures[i].bpp / 8;
 		i++;
 	}
 	return (true);
@@ -37,6 +38,7 @@ bool	read_wall_textures(t_data *data)
 		if (!data->wall_textures[i].img)
 			return (false);
 		data->wall_textures[i].addr = mlx_get_data_addr(data->wall_textures[i].img, &data->wall_textures[i].bpp, &data->wall_textures[i].size_line, &data->wall_textures[i].endian);
+		data->wall_textures[i].bytes_pp = data->wall_textures[i].bpp / 8;
 		i++;
 	}
 	return (true);
@@ -192,6 +194,7 @@ bool	read_sprites(t_data *data)
 			data->sprites_animations[i].frames[j].addr = mlx_get_data_addr(data->sprites_animations[i].frames[j].img,
 				&(data->sprites_animations[i].frames[j].bpp), &(data->sprites_animations[i].frames[j].size_line),
 				&(data->sprites_animations[i].frames[j].endian));
+			data->sprites_animations[i].frames[j].bytes_pp = data->sprites_animations[i].frames[j].bpp / 8;
 			j++;
 		}
 		i++;

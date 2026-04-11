@@ -65,6 +65,35 @@ void	set_player(char **map, t_player *player)
 	player->radius = PLAYER_RADIUS;
 }
 
+// int	main(void)
+// {
+// 		char	*map[7] = {
+// 			"111111",
+// 			"10s001",
+// 			"11D101",
+// 			"100so1",
+// 			"10N001",
+// 			"111111",
+// 			NULL
+// 			};
+// 	static t_data	data;
+
+// 	data.map = test_mock_map_structure_prep(map);
+// 	if (!data.map || !init(&data) || !read_resources(&data))
+// 		return (free_data(&data), print_error(), 1);
+// 	set_default_keybindings(data.input.keybindings);
+// 	set_player(map, &data.player);
+// 	data.ceiling_color = 0x1980a6;
+// 	data.floor_color = 0xb3c7bd;
+// 	mlx_hook(data.x_data.win, 2, 1L << 0, key_down, &data.input);
+// 	mlx_hook(data.x_data.win, 3, 1L << 1, key_up, &data.input);
+// 	mlx_hook(data.x_data.win, 17, 0, exit_handler, &data);
+// 	mlx_hook(data.x_data.win, 6, 1L<<6, handle_mouse, &data);
+// 	data.time_data.last_frame_time = ft_get_time_us();
+// 	mlx_loop_hook(data.x_data.xconn, game_loop, &data);
+// 	mlx_loop(data.x_data.xconn);
+// }
+
 int	main(void)
 {
 		char	*map[7] = {
@@ -78,19 +107,13 @@ int	main(void)
 			};
 	static t_data	data;
 
-	data.player.fov_scale = tanf(FOV / 2.0 * (M_PI / 180.0f) * ((float)RES_X / RES_Y));
 	data.map = test_mock_map_structure_prep(map);
-	if (!init(&data) || !read_resources(&data))
+	if (!data.map || !init(&data) || !read_resources(&data))
 		return (free_data(&data), print_error(), 1);
 	set_default_keybindings(data.input.keybindings);
 	set_player(map, &data.player);
 	data.ceiling_color = 0x1980a6;
 	data.floor_color = 0xb3c7bd;
-	mlx_hook(data.x_data.win, 2, 1L << 0, key_down, &data.input);
-	mlx_hook(data.x_data.win, 3, 1L << 1, key_up, &data.input);
-	mlx_hook(data.x_data.win, 17, 0, exit_handler, &data);
-	mlx_hook(data.x_data.win, 6, 1L<<6, handle_mouse, &data);
 	data.time_data.last_frame_time = ft_get_time_us();
-	mlx_loop_hook(data.x_data.xconn, game_loop, &data);
-	mlx_loop(data.x_data.xconn);
+	hook_up(&data);
 }

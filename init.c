@@ -15,14 +15,8 @@ bool	x_init(t_x_data *data)
 		return (false);
 	while (i < 2)
 	{
-		data->img_data[i].img = mlx_new_image(data->xconn, RES_X, RES_Y);
-		if (!data->img_data[i].img)
+		if (!ft_create_new_image(&data->img_data[i], data->xconn, data->res[0], data->res[1]))
 			return (false);
-		data->img_data[i].addr = mlx_get_data_addr(data->img_data[i].img,
-				&(data->img_data[i].bpp),
-				&(data->img_data[i].size_line), &(data->img_data[i].endian));
-		data->img_data[i].res_x = data->res[0];
-		data->img_data[i].res_y = data->res[1];
 		i++;
 	}
 	data->curr_framebuf = &(data->img_data[(data->framebuf_sel)++ % 2]);
@@ -53,16 +47,10 @@ t_map	**alloc_active_doors(t_data *data)
 	return (active_doors);
 }
 
-bool	init_mouse(t_data *data)
-{
-	mlx_mouse_hide(data->x_data.xconn, data->x_data.win);
-	mlx_mouse_move(data->x_data.xconn, data->x_data.win,
-		data->x_data.res[0] / 2, data->x_data.res[1] / 2);
-	return (true);
-}
-
 bool	init(t_data *data)
 {
+	data->player.fov_scale = tanf(FOV / 2.0 *
+		(M_PI / 180.0f) * ((float)RES_X / RES_Y));
 	if (!x_init(&(data->x_data)) || !init_mouse(data))
 		return (false);
 	data->sprites_zsorted = alloc_zsorted(data);

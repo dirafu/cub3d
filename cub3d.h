@@ -77,6 +77,7 @@ typedef struct s_img_data
 	void		*img;
 	char		*addr;
 	int			bpp;
+	int			bytes_pp;
 	int			size_line;
 	int			endian;
 	int			res_x;
@@ -225,6 +226,15 @@ typedef	struct s_render_facilities
 	int			door_y;
 }	t_render_facilities;
 
+typedef	struct s_draw_ctx
+{
+    char		*buff;
+    int			i;
+	int			size_line;
+    t_x_data	*x_data;
+    t_img_data	*tx;
+}	t_draw_ctx;
+
 //input
 void	set_default_keybindings(t_keybindings *keybindings);
 int		key_down(int keysym, t_input *input);
@@ -250,7 +260,7 @@ int		get_img_px_color(t_img_data *image, int x, int y);
 
 //rendering
 void	fill_render_info(t_render_facilities *rf, t_player *player, t_point2d *raydir);
-int		get_texture_pixel(int wall_y, t_data *data, t_render_facilities *rf, t_img_data *tx);
+int		get_texture_pixel(int wall_y, t_render_facilities *rf, t_img_data *tx);
 bool	draw_door(int x, t_data *data, t_render_facilities *rf_o, t_point2d raydir);
 float	get_hit_dist(t_render_facilities *rf);
 void	do_step(t_point2d *raydir, t_render_facilities *rf);
@@ -282,9 +292,12 @@ bool	read_wall_textures(t_data *data);
 char	*get_full_frame_filename(char *dir, size_t num_width, size_t frame_num);
 
 //other init
+bool					ft_create_new_image(t_img_data *img_d, void *xconn, int x, int y);
 bool					init(t_data *data);
 bool					x_init(t_x_data *data);
 t_sprite_rendering_view	*alloc_zsorted(t_data *data);
+void					hook_up(t_data *data);
+bool					init_mouse(t_data *data);
 
 t_map	**test_mock_map_structure_prep(char **map);
 

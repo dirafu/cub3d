@@ -20,7 +20,7 @@ void	match_map_char(t_map *map_cell, char cell_literal)
 		map_cell->type = CELL_EMPTY;
 	else if (cell_literal == 'D')
 		map_cell->type = CELL_DOOR;
-	else if (cell_literal == '_')
+	else if (cell_literal == ' ')
 		map_cell->type = CELL_NONE;
 	else
 	{
@@ -49,7 +49,6 @@ t_map	**test_mock_map_structure_prep(char **map)
 		map_struct[i] = ft_calloc(row_len + 1, sizeof(**map_struct));
 		if (!map_struct[i])
 			return (NULL);
-			//todo: properly handle
 		while (map[i][j])
 		{
 			match_map_char(&(map_struct[i][j]), map[i][j]);
