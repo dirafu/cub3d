@@ -54,7 +54,7 @@ static t_img_data	*set_tx(t_data *data, t_render_facilities *rf)
 	return (tx);
 }
 
-void	put_bg(t_draw_ctx *ctx, int bound, int color)
+void	put_bg(t_wall_draw_ctx *ctx, int bound, int color)
 {
 	while (ctx->i < bound)
 	{
@@ -64,7 +64,7 @@ void	put_bg(t_draw_ctx *ctx, int bound, int color)
 	}
 }
 
-void	put_wall(t_draw_ctx *ctx, t_render_facilities *rf, int wall_y, int y)
+void	put_wall(t_wall_draw_ctx *ctx, t_render_facilities *rf, int wall_y, int y)
 {
 	int		tx_x;
 	int		bound;
@@ -96,7 +96,7 @@ void	put_wall_bar_on_img(int x, t_data *data, t_render_facilities *rf)
 {
 	int			y;
 	int			wall_y;
-	t_draw_ctx	ctx;
+	t_wall_draw_ctx	ctx;
 
 	ctx.buff = (char *)(data->x_data.curr_framebuf->addr)
 		+ x * data->x_data.curr_framebuf->bytes_pp;

@@ -108,33 +108,52 @@ void	put_sprite_on_img_pt3(float tx_xy[2], int img_xy[2],
 		put_px_on_img(&(data->x_data), img_xy[0], img_xy[1], color);
 }
 
-void	put_sprite_on_img_pt2(int proj_res[2], int img_xy[2],
-	t_data *data, t_sprite_rendering_view *r_v)
+void	cull_non_visible(t_sprite_draw_ctx *ctx)
 {
-	float		step_xy[2];
-	float		tx_xy[2];
-	t_img_data	*sprite_img;
-	int			restore[2];
-
-	sprite_img = &r_v->sprite->animation->frames[r_v->sprite->curr_frame];
-	step_xy[0] = sprite_img->res_x / (float)proj_res[0];
-	step_xy[1] = sprite_img->res_y / (float)proj_res[1];
-	tx_xy[0] = 0;
-	restore[0] = proj_res[1];
-	restore[1] = img_xy[1];
-	while ((proj_res[0])--)
+	if (ctx->img_xy[0] < 0)
 	{
-		tx_xy[1] = 0;
-		proj_res[1] = restore[0];
-		img_xy[1] = restore[1];
-		while ((proj_res[1])--)
+		ctx->tx_xy[0] += ctx->step_xy[0] * (-ctx->img_xy[0]);
+		ctx->proj_res[0] += ctx->img_xy[0];
+		ctx->img_xy[0] = 0;
+	}
+	if (ctx->img_xy[1] < 0)
+	{
+		ctx->tx_xy[1] += ctx->step_xy[1] * (-ctx->img_xy[1]);
+		ctx->proj_res[1] += ctx->img_xy[1];
+		ctx->img_xy[1] = 0;
+	}
+	if ((ctx->img_xy[0] + ctx->proj_res[0]) > ctx->x_data->res[0])
+		ctx->proj_res[0] = ctx->x_data->res[0] - ctx->img_xy[0];
+	if ((ctx->img_xy[1] + ctx->proj_res[1]) > ctx->x_data->res[1])
+		ctx->proj_res[1] = ctx->x_data->res[1] - ctx->img_xy[1];
+}
+
+void	put_sprite_on_img_pt2(t_sprite_draw_ctx	*ctx)
+{
+	while (ctx->proj_res[0]-- && ++ctx->img_xy[0])
+	{
+		ctx->tx_xy[1] = ctx->tx_y;
+		ctx->proj_res[1] = ctx->proj_res_y;
+		ctx->fr_buff_rst = ctx->fr_buff;
+		ctx->tx_buff_rst = ctx->tx_buff;
+		while (ctx->proj_res[1]-- && ctx->sp_z
+			< ctx->x_data->zbuff[ctx->img_xy[0] - 1])
 		{
-			put_sprite_on_img_pt3(tx_xy, img_xy, data, r_v);
-			tx_xy[1] += step_xy[1];
-			img_xy[1]++;
+			if (*(unsigned int *)ctx->tx_buff != 0x980088)
+				*(unsigned int *)ctx->fr_buff = *(unsigned int *)ctx->tx_buff;
+			ctx->fr_buff += ctx->fr_size_line;
+			if ((int)ctx->tx_xy[1] != ctx->tx_xy[1] + ctx->step_xy[1])
+				ctx->tx_buff += ((int)(ctx->tx_xy[1] + ctx->step_xy[1])
+						- (int)ctx->tx_xy[1]) * ctx->tx_size_line;
+			ctx->tx_xy[1] += ctx->step_xy[1];
 		}
-		tx_xy[0] += step_xy[0];
-		img_xy[0]++;
+		ctx->tx_buff = ctx->tx_buff_rst;
+		ctx->fr_buff = ctx->fr_buff_rst;
+		if ((int)ctx->tx_xy[0] != ctx->tx_xy[0] + ctx->step_xy[0])
+			ctx->tx_buff += ((int)(ctx->tx_xy[0] + ctx->step_xy[0])
+					- (int)ctx->tx_xy[0]) * ctx->tx->bytes_pp;
+		ctx->fr_buff += ctx->x_data->curr_framebuf->bytes_pp;
+		ctx->tx_xy[0] += ctx->step_xy[0];
 	}
 }
 
@@ -146,14 +165,31 @@ void	put_sprite_on_img_pt2(int proj_res[2], int img_xy[2],
 //img_xy[1] is y
 void	put_sprite_on_img(t_data *data, t_sprite_rendering_view *r_v)
 {
-	int		proj_res[2];
-	int		img_xy[2];
+	t_sprite_draw_ctx	ctx;
 
-	proj_res[0] = r_v->p_res[0];
-	proj_res[1] = r_v->p_res[1];
-	img_xy[0] = r_v->center_x - (proj_res[0] / 2);
-	img_xy[1] = (data->x_data.curr_framebuf->res_y / 2) - (proj_res[1] / 2);
-	put_sprite_on_img_pt2(proj_res, img_xy, data, r_v);
+	ctx.x_data = &data->x_data;
+	ctx.proj_res[0] = r_v->p_res[0];
+	ctx.proj_res[1] = r_v->p_res[1];
+	ctx.img_xy[0] = r_v->center_x - (ctx.proj_res[0] / 2);
+	ctx.img_xy[1] = (data->x_data.curr_framebuf->res_y / 2)
+		- (ctx.proj_res[1] / 2);
+	ctx.tx = &r_v->sprite->animation->frames[r_v->sprite->curr_frame];
+	ctx.tx_size_line = ctx.tx->size_line;
+	ctx.fr_size_line = data->x_data.curr_framebuf->size_line;
+	ctx.step_xy[0] = ctx.tx->res_x / (float)ctx.proj_res[0];
+	ctx.step_xy[1] = ctx.tx->res_y / (float)ctx.proj_res[1];
+	ctx.tx_xy[0] = 0;
+	ctx.tx_xy[1] = 0;
+	cull_non_visible(&ctx);
+	ctx.fr_buff = (data->x_data.curr_framebuf->addr)
+		+ ctx.img_xy[0] * data->x_data.curr_framebuf->bytes_pp
+		+ (data->x_data.curr_framebuf->size_line) * ctx.img_xy[1];
+	ctx.tx_buff = (ctx.tx->addr) + (int)ctx.tx_xy[0] * ctx.tx->bytes_pp
+		+ (ctx.tx->size_line) * (int)ctx.tx_xy[1];
+	ctx.tx_y = ctx.tx_xy[1];
+	ctx.proj_res_y = ctx.proj_res[1];
+	ctx.sp_z = r_v->pos_tr.y;
+	put_sprite_on_img_pt2(&ctx);
 }
 
 // alpha color 0x980088ff

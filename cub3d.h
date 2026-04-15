@@ -226,14 +226,34 @@ typedef	struct s_render_facilities
 	int			door_y;
 }	t_render_facilities;
 
-typedef	struct s_draw_ctx
+typedef	struct s_wall_draw_ctx
 {
     char		*buff;
     int			i;
 	int			size_line;
     t_x_data	*x_data;
     t_img_data	*tx;
-}	t_draw_ctx;
+}	t_wall_draw_ctx;
+
+typedef	struct s_sprite_draw_ctx
+{
+    char		*fr_buff;
+	char		*tx_buff;
+	char		*buff_rst[2];
+	char		*fr_buff_rst;
+	char		*tx_buff_rst;
+	t_x_data	*x_data;
+    t_img_data	*tx;
+	int			fr_size_line;
+	int			tx_size_line;
+	int			proj_res[2];
+	int			img_xy[2];
+	int			proj_res_y;
+	float		step_xy[2];
+	float		tx_xy[2];
+	float		tx_y;
+	float		sp_z;
+}	t_sprite_draw_ctx;
 
 //input
 void	set_default_keybindings(t_keybindings *keybindings);
