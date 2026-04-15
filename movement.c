@@ -10,7 +10,7 @@ void	rotate_player(t_player *player, float angle)
 	player->cam_plane = vec2d_mul(player->cam_plane, player->fov_scale);
 }
 
-static t_point2d	get_direction(t_point2d player_dir, enum direction dir)
+static t_point2d	get_direction(t_point2d player_dir, enum e_direction dir)
 {
 	float	tmp;
 
@@ -60,7 +60,7 @@ static bool	step_y(t_point2d *new_pos, t_point2d step,
 }
 
 void	step_player(t_player *player, t_map **map,
-	float step_size, enum direction dir)
+	float step_size, enum e_direction dir)
 {
 	t_point2d	step;
 	t_point2d	new_pos;

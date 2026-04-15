@@ -17,8 +17,8 @@
 # define RES_Y 480
 # define FOV 55
 # define PLAYER_RADIUS 0.1f
-# define A_FRAME_DUR_U 1000000 * 0.2f
-# define DOOR_AUTO_CLOSE_T 1000000 * 5
+# define A_FRAME_DUR_U 200000
+# define DOOR_AUTO_CLOSE_T 5000000
 
 typedef enum actions
 {
@@ -33,7 +33,7 @@ typedef enum actions
 	ACT_COUNT
 }	t_actions;
 
-typedef enum hit_type
+typedef enum e_hit_type
 {
 	HIT_NORTH = 0,
 	HIT_WEST,
@@ -44,7 +44,7 @@ typedef enum hit_type
 	HORIZONTAL,
 }	t_hit_type;
 
-typedef enum
+typedef enum e_wall_tex_enum
 {
 	WALL_TEX_N = 0,
 	WALL_TEX_W,
@@ -53,20 +53,20 @@ typedef enum
 	WALL_TEX_COUNT
 }	t_wall_tex_enum;
 
-typedef enum
+typedef enum e_door_tex_enum
 {
 	DOOR_TEX_FACE = 0,
 	DOOR_TEX_SIDE,
 	DOOR_TEX_COUNT
 }	t_door_tex_enum;
 
-enum	direction
+enum	e_direction
 {
 	PARALLEL,
 	PERPENDICULAR
 };
 
-typedef	struct s_point2d
+typedef struct s_point2d
 {
 	float	x;
 	float	y;
@@ -85,7 +85,7 @@ typedef struct s_img_data
 }	t_img_data;
 
 //array of all the loaded sprites variations (in data->sprites_animations)
-typedef	struct s_sprite_animation
+typedef struct s_sprite_animation
 {
 	t_img_data		*frames;
 	size_t			num_of_frames;
@@ -93,7 +93,7 @@ typedef	struct s_sprite_animation
 }	t_sprite_animation;
 
 //array of all the individual sprites on the map (in data->sprites)
-typedef	struct s_sprite
+typedef struct s_sprite
 {
 	t_sprite_animation	*animation;
 	t_point2d			pos;
@@ -101,8 +101,9 @@ typedef	struct s_sprite
 	size_t				curr_frame;
 }	t_sprite;
 
-//array of t_sprite * sorted by Y coord with transformed coordinates relative to player pos
-typedef	struct s_sprite_rendering_view
+//array of t_sprite * sorted by Y coord
+//with transformed coordinates relative to player pos
+typedef struct s_sprite_rendering_view
 {
 	t_sprite			*sprite;
 	t_point2d			pos_tr;
@@ -111,9 +112,10 @@ typedef	struct s_sprite_rendering_view
 	int					center_x;
 }	t_sprite_rendering_view;
 
-//animation is stored in ./{"$dir"} directory and named like frame number + ".xpm" with leading zeroes;
+//animation is stored in ./{"$dir"} directory and named
+//like frame number + ".xpm" with leading zeroes;
 //e.g. from 00.xpm to 41.xpm in case num_of_frames is 42
-typedef	struct s_animated_sprites_info
+typedef struct s_animated_sprites_info
 {
 	size_t	num_of_frames;
 	char	*dir;
@@ -131,7 +133,7 @@ typedef struct s_x_data
 	int			res[2];
 }	t_x_data;
 
-typedef enum
+typedef enum e_map_cell_type
 {
 	CELL_TERMINATOR = 0,
 	CELL_WALL,
@@ -141,7 +143,7 @@ typedef enum
 	CELL_NONE
 }	t_map_cell_type;
 
-typedef	enum
+typedef enum e_door_status
 {
 	DOOR_STATUS_CLOSED = 0,
 	DOOR_STATUS_OPENED,
@@ -149,7 +151,7 @@ typedef	enum
 	DOOR_STATUS_OPENING
 }	t_door_status;
 
-typedef	struct s_map
+typedef struct s_map
 {
 	t_map_cell_type		type;
 	t_sprite			*sprite;
@@ -160,7 +162,7 @@ typedef	struct s_map
 	char				sprite_id;
 }	t_map;
 
-typedef	struct s_player
+typedef struct s_player
 {
 	t_point2d	dir;
 	t_point2d	pos;
@@ -170,25 +172,25 @@ typedef	struct s_player
 	float		fov_scale;
 }	t_player;
 
-typedef	struct s_keybindings
+typedef struct s_keybindings
 {
 	t_actions	action;
 	int			keysym;
 }	t_keybindings;
 
-typedef	struct s_input
+typedef struct s_input
 {
 	bool			actions[ACT_COUNT];
 	t_keybindings	keybindings[ACT_COUNT * 2];
 }	t_input;
 
-typedef	struct s_time_data
+typedef struct s_time_data
 {
 	double		time_d;
 	uint64_t	last_frame_time;
 }	t_time_data;
 
-typedef	struct s_data
+typedef struct s_data
 {
 	t_time_data				time_data;
 	t_x_data				x_data;
@@ -206,7 +208,7 @@ typedef	struct s_data
 	int						floor_color;
 }	t_data;
 
-typedef	struct s_render_facilities
+typedef struct s_render_facilities
 {
 	float		t_x;
 	float		t_y;
@@ -226,24 +228,24 @@ typedef	struct s_render_facilities
 	int			door_y;
 }	t_render_facilities;
 
-typedef	struct s_wall_draw_ctx
+typedef struct s_wall_draw_ctx
 {
-    char		*buff;
-    int			i;
+	char		*buff;
+	int			i;
 	int			size_line;
-    t_x_data	*x_data;
-    t_img_data	*tx;
+	t_x_data	*x_data;
+	t_img_data	*tx;
 }	t_wall_draw_ctx;
 
-typedef	struct s_sprite_draw_ctx
+typedef struct s_sprite_draw_ctx
 {
-    char		*fr_buff;
+	char		*fr_buff;
 	char		*tx_buff;
 	char		*buff_rst[2];
 	char		*fr_buff_rst;
 	char		*tx_buff_rst;
 	t_x_data	*x_data;
-    t_img_data	*tx;
+	t_img_data	*tx;
 	int			fr_size_line;
 	int			tx_size_line;
 	int			proj_res[2];
@@ -257,91 +259,103 @@ typedef	struct s_sprite_draw_ctx
 
 typedef struct s_verif
 {
- char *no;
- char *so;
- char *we;
- char *ea;
- char *f;
- char *c;
- int  f_arr[3];
- int  c_arr[3];
- char **map;
- int  rows;
- int  cols;
- int  orient_set;
-} t_verif;
+	char	*no;
+	char	*so;
+	char	*we;
+	char	*ea;
+	char	*f;
+	char	*c;
+	int		f_arr[3];
+	int		c_arr[3];
+	char	**map;
+	int		rows;
+	int		cols;
+	int		orient_set;
+}	t_verif;
 
 //input
-void	set_default_keybindings(t_keybindings *keybindings);
-int		key_down(int keysym, t_input *input);
-int		key_up(int keysym, t_input *input);
-void	handle_keys(t_data *data);
-int		handle_mouse(int x, int y, t_data *data);
+void					set_default_keybindings(t_keybindings *keybindings);
+int						key_down(int keysym, t_input *input);
+int						key_up(int keysym, t_input *input);
+void					handle_keys(t_data *data);
+int						handle_mouse(int x, int y, t_data *data);
 
 //movement
-void	rotate_player(t_player *player, float angle);
-void	step_player(t_player *player, t_map **map, float step_size, enum direction dir);
+void					rotate_player(t_player *player, float angle);
+void					step_player(t_player *player, t_map **map,
+							float step_size, enum e_direction dir);
 
 //vector op-s
-t_point2d	vec2d_sum(t_point2d p1, t_point2d p2);
-t_point2d	vec2d_sub(t_point2d p1, t_point2d p2);
-t_point2d	vec2d_mul(t_point2d p1, float n);
-t_point2d	vec2d_rotate_by_angle(t_point2d p1, float angle);
-t_point2d	vec2d_normalize(t_point2d p1);
+t_point2d				vec2d_sum(t_point2d p1, t_point2d p2);
+t_point2d				vec2d_sub(t_point2d p1, t_point2d p2);
+t_point2d				vec2d_mul(t_point2d p1, float n);
+t_point2d				vec2d_rotate_by_angle(t_point2d p1, float angle);
+t_point2d				vec2d_normalize(t_point2d p1);
 
 //draw routines
-void	put_px_on_img(t_x_data *x_data, int x, int y, int color);
-void	put_wall_bar_on_img(int x, t_data *data, t_render_facilities *rf);
-int		get_img_px_color(t_img_data *image, int x, int y);
+void					put_px_on_img(t_x_data *x_data,
+							int x, int y, int color);
+void					put_wall_bar_on_img(int x, t_data *data,
+							t_render_facilities *rf);
+int						get_img_px_color(t_img_data *image, int x, int y);
 
 //rendering
-void	fill_render_info(t_render_facilities *rf, t_player *player, t_point2d *raydir);
-int		get_texture_pixel(int wall_y, t_render_facilities *rf, t_img_data *tx);
-bool	draw_door(int x, t_data *data, t_render_facilities *rf_o, t_point2d raydir);
-float	get_hit_dist(t_render_facilities *rf);
-void	do_step(t_point2d *raydir, t_render_facilities *rf);
-void	cast_ray(t_data *data, t_point2d raydir, int x);
-void	draw_frame(t_data *data);
-void	draw_walls(t_data *data);
-void	draw_sprites(t_data *data);
-void	sort_sprites(t_sprite_rendering_view *zsorted, size_t zsorted_size);
-size_t	transform_sprites_pos(t_sprite_rendering_view *r_view,
-	t_sprite *sprites, t_player *player, int res[2]);
-void	switch_sprites_frames(t_time_data *time_data, t_sprite *sprites);
+void					fill_render_info(t_render_facilities *rf,
+							t_player *player, t_point2d *raydir);
+int						get_texture_pixel(int wall_y,
+							t_render_facilities *rf, t_img_data *tx);
+bool					draw_door(int x, t_data *data,
+							t_render_facilities *rf_o, t_point2d raydir);
+float					get_hit_dist(t_render_facilities *rf);
+void					do_step(t_point2d *raydir, t_render_facilities *rf);
+void					cast_ray(t_data *data, t_point2d raydir, int x);
+void					draw_frame(t_data *data);
+void					draw_walls(t_data *data);
+void					draw_sprites(t_data *data);
+void					sort_sprites(t_sprite_rendering_view *zsorted,
+							size_t zsorted_size);
+size_t					transform_sprites_pos(t_sprite_rendering_view *r_view,
+							t_sprite *sprites, t_player *player, int res[2]);
+void					switch_sprites_frames(t_time_data *time_data,
+							t_sprite *sprites);
 
 //cleanup
-void	free_data(t_data *data);
-int		exit_handler(t_data *data);
-void	free_textures(t_data *data);
-void	free_xdata(t_data *data);
-void	free_map(t_data *data);
-void	free_sprites_array(t_data *data);
+void					free_data(t_data *data);
+int						exit_handler(t_data *data);
+void					free_textures(t_data *data);
+void					free_xdata(t_data *data);
+void					free_map(t_data *data);
+void					free_sprites_array(t_data *data);
 
 //main game loop
-int		game_loop(t_data *data);
+int						game_loop(t_data *data);
 
 //misc
-uint64_t	ft_get_time_us(void);
-void		print_error();
-size_t		count_map_cells(t_map **map, t_map_cell_type type);
+uint64_t				ft_get_time_us(void);
+void					print_error(void);
+size_t					count_map_cells(t_map **map, t_map_cell_type type);
 
 //textures initialization
-bool		read_resources(t_data *data, t_verif *verif);
-bool		read_sprites(t_data *data);
-bool		read_wall_textures(t_data *data, char **texture_filenames);
-bool		read_door_textures(t_data *data);
-char		*get_full_frame_filename(char *dir, size_t num_width, size_t frame_num);
-t_sprite	*init_sprites_array(t_data *data, t_animated_sprites_info *info);
+bool					read_resources(t_data *data, t_verif *verif);
+bool					read_sprites(t_data *data);
+bool					read_wall_textures(t_data *data,
+							char **texture_filenames);
+bool					read_door_textures(t_data *data);
+char					*get_full_frame_filename(char *dir, size_t num_width,
+							size_t frame_num);
+t_sprite				*init_sprites_array(t_data *data,
+							t_animated_sprites_info *info);
 
 //other init
 void					set_player(char **map, t_player *player);
-bool					ft_create_new_image(t_img_data *img_d, void *xconn, int x, int y);
+bool					ft_create_new_image(t_img_data *img_d,
+							void *xconn, int x, int y);
 bool					init(t_data *data, t_verif *verif);
 bool					x_init(t_x_data *data);
 t_sprite_rendering_view	*alloc_zsorted(t_data *data);
 void					hook_up(t_data *data);
 bool					init_mouse(t_data *data);
 
-t_map	**map_struct_prep(char **map);
+t_map					**map_struct_prep(char **map);
 
 #endif
