@@ -5,85 +5,42 @@
 {'1', '1', '0', '0', 'N', '1'},
 {'1', '1', '1', '1', '1', '1'}*/
 
-bool	set_player_pt2(char c, t_player *player)
-{
-	if (c == 'N')
-	{
-		player->dir.x = 0;
-		player->dir.y = 1;
-	}
-	else if (c == 'W')
-	{
-		player->dir.x = -1;
-		player->dir.y = 0;
-	}
-	else if (c == 'S')
-	{
-		player->dir.x = 0;
-		player->dir.y = -1;
-	}
-	else if (c == 'E')
-	{
-		player->dir.x = 1;
-		player->dir.y = 0;
-	}
-	else
-		return (false);
-	return (true);
-}
-
-void	set_position(char **map, t_player *player)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (map[i])
-	{
-		j = 0;
-		while (map[i][j])
-		{
-			if (set_player_pt2(map[i][j], player))
-			{
-				player->pos.y = -((float)i + 0.5);
-				player->pos.x = (float)j + 0.5;
-				return ;
-			}
-			j++;
-		}
-		i++;
-	}
-}
-
-void	set_player(char **map, t_player *player)
-{
-	set_position(map, player);
-	player->cam_plane.x = player->dir.y;
-	player->cam_plane.y = -player->dir.x;
-	player->cam_plane_normalized = player->cam_plane;
-	player->cam_plane = vec2d_mul(player->cam_plane, player->fov_scale);
-	player->radius = PLAYER_RADIUS;
-}
-
 int	main(void)
 {
-		char	*map[7] = {
-			"111111",
-			"10s001",
-			"11D101",
-			"10Nso1",
-			"110001",
-			"111111",
-			NULL
-			};
+	static char		*map[7] = {
+		"111111",
+		"10s001",
+		"11D101",
+		"10Nso1",
+		"110001",
+		"111111",
+		NULL
+	};
+	static t_verif	verif = {
+		.no = "wall_textures/N_wall.xpm",
+		.so = "wall_textures/S_wall.xpm",
+		.we = "wall_textures/W_wall.xpm",
+		.ea = "wall_textures/E_wall.xpm",
+		.f = NULL,
+		.c = NULL,
+		.f_arr = {
+		(0xb3c7bd >> (8 * 2)) & 0x0000ff,
+		(0xb3c7bd >> 8) & 0x0000ff,
+		0xb3c7bd & 0x0000ff
+	},
+		.c_arr = {
+		(0x1980a6 >> (8 * 2)) & 0x0000ff,
+		(0x1980a6 >> 8) & 0x0000ff,
+		0x1980a6 & 0x0000ff
+	},
+		.map = map,
+		.rows = 6,
+		.cols = 6,
+		.orient_set = 0
+	};
 	static t_data	data;
 
-	data.map = test_mock_map_structure_prep(map);
-	if (!data.map || !init(&data) || !read_resources(&data))
+	if (!init(&data, &verif) || !read_resources(&data, &verif))
 		return (free_data(&data), print_error(), 1);
-	set_default_keybindings(data.input.keybindings);
-	set_player(map, &data.player);
-	data.ceiling_color = 0x1980a6;
-	data.floor_color = 0xb3c7bd;
 	hook_up(&data);
 }

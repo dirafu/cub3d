@@ -255,6 +255,22 @@ typedef	struct s_sprite_draw_ctx
 	float		sp_z;
 }	t_sprite_draw_ctx;
 
+typedef struct s_verif
+{
+ char *no;
+ char *so;
+ char *we;
+ char *ea;
+ char *f;
+ char *c;
+ int  f_arr[3];
+ int  c_arr[3];
+ char **map;
+ int  rows;
+ int  cols;
+ int  orient_set;
+} t_verif;
+
 //input
 void	set_default_keybindings(t_keybindings *keybindings);
 int		key_down(int keysym, t_input *input);
@@ -288,6 +304,10 @@ void	cast_ray(t_data *data, t_point2d raydir, int x);
 void	draw_frame(t_data *data);
 void	draw_walls(t_data *data);
 void	draw_sprites(t_data *data);
+void	sort_sprites(t_sprite_rendering_view *zsorted, size_t zsorted_size);
+size_t	transform_sprites_pos(t_sprite_rendering_view *r_view,
+	t_sprite *sprites, t_player *player, int res[2]);
+void	switch_sprites_frames(t_time_data *time_data, t_sprite *sprites);
 
 //cleanup
 void	free_data(t_data *data);
@@ -306,19 +326,22 @@ void		print_error();
 size_t		count_map_cells(t_map **map, t_map_cell_type type);
 
 //textures initialization
-bool	read_resources(t_data *data);
-bool	read_sprites(t_data *data);
-bool	read_wall_textures(t_data *data);
-char	*get_full_frame_filename(char *dir, size_t num_width, size_t frame_num);
+bool		read_resources(t_data *data, t_verif *verif);
+bool		read_sprites(t_data *data);
+bool		read_wall_textures(t_data *data, char **texture_filenames);
+bool		read_door_textures(t_data *data);
+char		*get_full_frame_filename(char *dir, size_t num_width, size_t frame_num);
+t_sprite	*init_sprites_array(t_data *data, t_animated_sprites_info *info);
 
 //other init
+void					set_player(char **map, t_player *player);
 bool					ft_create_new_image(t_img_data *img_d, void *xconn, int x, int y);
-bool					init(t_data *data);
+bool					init(t_data *data, t_verif *verif);
 bool					x_init(t_x_data *data);
 t_sprite_rendering_view	*alloc_zsorted(t_data *data);
 void					hook_up(t_data *data);
 bool					init_mouse(t_data *data);
 
-t_map	**test_mock_map_structure_prep(char **map);
+t_map	**map_struct_prep(char **map);
 
 #endif

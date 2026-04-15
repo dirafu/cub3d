@@ -74,22 +74,6 @@ void	draw_walls(t_data *data)
 	}
 }
 
-void	switch_sprites_frames(t_time_data *time_data, t_sprite *sprites)
-{
-	while (sprites->animation)
-	{
-		if (time_data->last_frame_time - sprites->last_update_t
-			> sprites->animation->frame_duration)
-		{
-			sprites->last_update_t = time_data->last_frame_time;
-			sprites->curr_frame++;
-		}
-		if (sprites->curr_frame >= sprites->animation->num_of_frames)
-			sprites->curr_frame = 0;
-		sprites++;
-	}
-}
-
 void	draw_frame(t_data *data)
 {
 	t_x_data	*x_d;

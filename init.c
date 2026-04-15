@@ -48,8 +48,11 @@ t_map	**alloc_active_doors(t_data *data)
 	return (active_doors);
 }
 
-bool	init(t_data *data)
+bool	init(t_data *data, t_verif *verif)
 {
+	data->map = map_struct_prep(verif->map);
+	if (!data->map)
+		return (false);
 	data->player.fov_scale = tanf(FOV / 2.0
 			* (M_PI / 180.0f) * ((float)RES_X / RES_Y));
 	if (!x_init(&(data->x_data)) || !init_mouse(data))
@@ -61,5 +64,24 @@ bool	init(t_data *data)
 	if (!data->active_doors)
 		return (false);
 	data->active_doors_count = 0;
+	set_default_keybindings(data->input.keybindings);
+	set_player(verif->map, &data->player);
+	data->ceiling_color = (verif->c_arr[0] << (8 * 2))
+		+ (verif->c_arr[1] << 8)
+		+ (verif->c_arr[2]);
+	data->floor_color = (verif->f_arr[0] << (8 * 2))
+		+ (verif->f_arr[1] << 8)
+		+ (verif->f_arr[2]);
 	return (true);
+}
+
+void	hook_up(t_data *data)
+{
+	mlx_hook(data->x_data.win, 2, 1L << 0, key_down, &data->input);
+	mlx_hook(data->x_data.win, 3, 1L << 1, key_up, &data->input);
+	mlx_hook(data->x_data.win, 17, 0, exit_handler, data);
+	mlx_hook(data->x_data.win, 6, 1L << 6, handle_mouse, data);
+	data->time_data.last_frame_time = ft_get_time_us();
+	mlx_loop_hook(data->x_data.xconn, game_loop, data);
+	mlx_loop(data->x_data.xconn);
 }

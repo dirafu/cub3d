@@ -29,7 +29,19 @@ void	match_map_char(t_map *map_cell, char cell_literal)
 	}
 }
 
-t_map	**test_mock_map_structure_prep(char **map)
+void	map_struct_prep_pt2(char **map, t_map **map_struct, int i, int j)
+{
+	match_map_char(&(map_struct[i][j]), map[i][j]);
+	if (map_struct[i][j].type == CELL_DOOR)
+	{
+		if (map[i][j - 1] == '1' && map[i][j + 1] == '1')
+			map_struct[i][j].door_orientation = HORIZONTAL;
+		else
+			map_struct[i][j].door_orientation = VERTICAL;
+	}
+}
+
+t_map	**map_struct_prep(char **map)
 {
 	size_t	i;
 	size_t	j;
@@ -50,17 +62,7 @@ t_map	**test_mock_map_structure_prep(char **map)
 		if (!map_struct[i])
 			return (NULL);
 		while (map[i][j])
-		{
-			match_map_char(&(map_struct[i][j]), map[i][j]);
-			if (map_struct[i][j].type == CELL_DOOR)
-			{
-				if (map[i][j - 1] == '1' && map[i][j + 1] == '1')
-					map_struct[i][j].door_orientation = HORIZONTAL;
-				else
-					map_struct[i][j].door_orientation = VERTICAL;
-			}
-			j++;
-		}
+			map_struct_prep_pt2(map, map_struct, i, j++);
 		i++;
 	}
 	return (map_struct);

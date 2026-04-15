@@ -22,13 +22,62 @@ bool	init_mouse(t_data *data)
 	return (true);
 }
 
-void	hook_up(t_data *data)
+bool	set_player_pt2(char c, t_player *player)
 {
-	mlx_hook(data->x_data.win, 2, 1L << 0, key_down, &data->input);
-	mlx_hook(data->x_data.win, 3, 1L << 1, key_up, &data->input);
-	mlx_hook(data->x_data.win, 17, 0, exit_handler, data);
-	mlx_hook(data->x_data.win, 6, 1L << 6, handle_mouse, data);
-	data->time_data.last_frame_time = ft_get_time_us();
-	mlx_loop_hook(data->x_data.xconn, game_loop, data);
-	mlx_loop(data->x_data.xconn);
+	if (c == 'N')
+	{
+		player->dir.x = 0;
+		player->dir.y = 1;
+	}
+	else if (c == 'W')
+	{
+		player->dir.x = -1;
+		player->dir.y = 0;
+	}
+	else if (c == 'S')
+	{
+		player->dir.x = 0;
+		player->dir.y = -1;
+	}
+	else if (c == 'E')
+	{
+		player->dir.x = 1;
+		player->dir.y = 0;
+	}
+	else
+		return (false);
+	return (true);
+}
+
+void	set_position(char **map, t_player *player)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (set_player_pt2(map[i][j], player))
+			{
+				player->pos.y = -((float)i + 0.5);
+				player->pos.x = (float)j + 0.5;
+				return ;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+void	set_player(char **map, t_player *player)
+{
+	set_position(map, player);
+	player->cam_plane.x = player->dir.y;
+	player->cam_plane.y = -player->dir.x;
+	player->cam_plane_normalized = player->cam_plane;
+	player->cam_plane = vec2d_mul(player->cam_plane, player->fov_scale);
+	player->radius = PLAYER_RADIUS;
 }

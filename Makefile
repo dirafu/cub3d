@@ -3,8 +3,8 @@ CFLAGS=-Wall -Wextra -Werror -O3 -fsanitize=address -g
 HEADER=cub3d.h
 P_SRC=main.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c \
 draw_routines.c game_loop.c key_ops.c vector_ops.c movement.c rendering.c rendering2.c \
-rendering3.c cleanup.c cleanup2.c init.c init2.c mouse.c\
-get_time.c read_resources.c test_mock_map_structure_prep.c
+rendering3.c rendering4.c rendering5.c cleanup.c cleanup2.c init.c init2.c mouse.c get_time.c \
+test_mock_map_structure_prep.c read_resources.c read_resources2.c read_resources3.c
 P_OBJ=$(P_SRC:.c=.o)
 
 all: $(HEADER) $(P_SRC) $(P_NAME)
