@@ -11,10 +11,15 @@ bool	read_door_textures(t_data *data)
 	i = 0;
 	while (i < DOOR_TEX_COUNT)
 	{
-		data->door_textures[i].img = mlx_xpm_file_to_image(data->x_data.xconn, texture_filenames[i], &(data->door_textures[i].res_x), &(data->door_textures[i].res_y));
+		data->door_textures[i].img = mlx_xpm_file_to_image(data->x_data.xconn,
+				texture_filenames[i], &(data->door_textures[i].res_x),
+				&(data->door_textures[i].res_y));
 		if (!data->door_textures[i].img)
 			return (false);
-		data->door_textures[i].addr = mlx_get_data_addr(data->door_textures[i].img, &data->door_textures[i].bpp, &data->door_textures[i].size_line, &data->door_textures[i].endian);
+		data->door_textures[i].addr = mlx_get_data_addr(
+				data->door_textures[i].img, &data->door_textures[i].bpp,
+				&data->door_textures[i].size_line,
+				&data->door_textures[i].endian);
 		data->door_textures[i].bytes_pp = data->door_textures[i].bpp / 8;
 		i++;
 	}
@@ -34,10 +39,16 @@ bool	read_wall_textures(t_data *data)
 	i = 0;
 	while (i < WALL_TEX_COUNT)
 	{
-		data->wall_textures[i].img = mlx_xpm_file_to_image(data->x_data.xconn, texture_filenames[i], &(data->wall_textures[i].res_x), &(data->wall_textures[i].res_y));
+		data->wall_textures[i].img = mlx_xpm_file_to_image(
+				data->x_data.xconn, texture_filenames[i],
+				&(data->wall_textures[i].res_x),
+				&(data->wall_textures[i].res_y));
 		if (!data->wall_textures[i].img)
 			return (false);
-		data->wall_textures[i].addr = mlx_get_data_addr(data->wall_textures[i].img, &data->wall_textures[i].bpp, &data->wall_textures[i].size_line, &data->wall_textures[i].endian);
+		data->wall_textures[i].addr = mlx_get_data_addr(
+				data->wall_textures[i].img, &data->wall_textures[i].bpp,
+				&data->wall_textures[i].size_line,
+				&data->wall_textures[i].endian);
 		data->wall_textures[i].bytes_pp = data->wall_textures[i].bpp / 8;
 		i++;
 	}
@@ -65,10 +76,11 @@ char	*get_full_frame_filename(char *dir, size_t num_width, size_t frame_num)
 	free(filename);
 	if (!full_filename)
 		return (NULL);
-	return(full_filename);	
+	return (full_filename);
 }
 
-t_sprite_animation	*get_animation(t_animated_sprites_info *info, t_sprite_animation* animations, char sprite_id)
+t_sprite_animation	*get_animation(t_animated_sprites_info *info,
+	t_sprite_animation *animations, char sprite_id)
 {
 	size_t	i;
 
@@ -107,7 +119,8 @@ size_t	count_map_cells(t_map **map, t_map_cell_type type)
 }
 
 // fill sprites array with pos, respective *animation
-void	link_sprites_to_map(t_data *data, t_sprite *sprites, t_animated_sprites_info *info)
+void	link_sprites_to_map(t_data *data, t_sprite *sprites,
+	t_animated_sprites_info *info)
 {
 	size_t	i;
 	size_t	j;
@@ -125,7 +138,8 @@ void	link_sprites_to_map(t_data *data, t_sprite *sprites, t_animated_sprites_inf
 				sprites[sprite_n].pos.y = -(i + 0.5f);
 				sprites[sprite_n].pos.x = (j + 0.5f);
 				data->map[i][j].sprite = &(sprites[sprite_n]);
-				data->map[i][j].sprite->animation = get_animation(info, data->sprites_animations, data->map[i][j].sprite_id);
+				data->map[i][j].sprite->animation = get_animation(info,
+						data->sprites_animations, data->map[i][j].sprite_id);
 				sprite_n++;
 			}
 			j++;
@@ -142,7 +156,7 @@ t_sprite	*init_sprites_array(t_data *data, t_animated_sprites_info *info)
 	sprite_c = count_map_cells(data->map, CELL_SPRITE);
 	sprites = ft_calloc(sprite_c + 1, sizeof(*(data->sprites)));
 	if (!sprites)
-		return(NULL);
+		return (NULL);
 	link_sprites_to_map(data, sprites, info);
 	return (sprites);
 }

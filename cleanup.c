@@ -5,7 +5,6 @@ void	free_map(t_data *data)
 	size_t	i;
 
 	i = 0;
-
 	while (data && data->map && data->map[i])
 	{
 		free(data->map[i]);
@@ -27,13 +26,15 @@ void	free_sprites(t_data *data)
 	size_t	j;
 
 	i = 0;
-	while (data && data->sprites_animations && data->sprites_animations[i].frames)
+	while (data && data->sprites_animations
+		&& data->sprites_animations[i].frames)
 	{
 		j = 0;
 		while (j < data->sprites_animations[i].num_of_frames)
 		{
 			if (data->x_data.xconn && data->sprites_animations[i].frames[j].img)
-				mlx_destroy_image(data->x_data.xconn, data->sprites_animations[i].frames[j].img);
+				mlx_destroy_image(data->x_data.xconn,
+					data->sprites_animations[i].frames[j].img);
 			data->sprites_animations[i].frames[j].img = NULL;
 			j++;
 		}

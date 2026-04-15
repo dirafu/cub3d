@@ -15,7 +15,8 @@ bool	x_init(t_x_data *data)
 		return (false);
 	while (i < 2)
 	{
-		if (!ft_create_new_image(&data->img_data[i], data->xconn, data->res[0], data->res[1]))
+		if (!ft_create_new_image(&data->img_data[i],
+				data->xconn, data->res[0], data->res[1]))
 			return (false);
 		i++;
 	}
@@ -49,8 +50,8 @@ t_map	**alloc_active_doors(t_data *data)
 
 bool	init(t_data *data)
 {
-	data->player.fov_scale = tanf(FOV / 2.0 *
-		(M_PI / 180.0f) * ((float)RES_X / RES_Y));
+	data->player.fov_scale = tanf(FOV / 2.0
+			* (M_PI / 180.0f) * ((float)RES_X / RES_Y));
 	if (!x_init(&(data->x_data)) || !init_mouse(data))
 		return (false);
 	data->sprites_zsorted = alloc_zsorted(data);

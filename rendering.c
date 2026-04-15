@@ -3,7 +3,7 @@
 void	do_step(t_point2d *raydir, t_render_facilities *rf)
 {
 	if (rf->next_x < rf->next_y)
-	{	
+	{
 		rf->next_x += rf->t_x;
 		rf->x += rf->step_x;
 		rf->hit = VERTICAL;
@@ -43,7 +43,8 @@ void	cast_ray(t_data *data, t_point2d raydir, int x)
 	fill_render_info(&rf, &data->player, &raydir);
 	while (rf.hit == HIT_NONE)
 	{
-		if (data->map[-rf.y][rf.x].type == CELL_DOOR && draw_door(x, data, &rf, raydir))
+		if (data->map[-rf.y][rf.x].type == CELL_DOOR
+				&& draw_door(x, data, &rf, raydir))
 			return ;
 		do_step(&raydir, &rf);
 		if (data->map[-rf.y][rf.x].type != CELL_WALL)
@@ -77,7 +78,8 @@ void	switch_sprites_frames(t_time_data *time_data, t_sprite *sprites)
 {
 	while (sprites->animation)
 	{
-		if (time_data->last_frame_time - sprites->last_update_t > sprites->animation->frame_duration)
+		if (time_data->last_frame_time - sprites->last_update_t
+			> sprites->animation->frame_duration)
 		{
 			sprites->last_update_t = time_data->last_frame_time;
 			sprites->curr_frame++;
