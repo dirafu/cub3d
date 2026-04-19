@@ -170,6 +170,8 @@ typedef struct s_player
 	t_point2d	cam_plane_normalized;
 	float		radius;
 	float		fov_scale;
+	float		fov;
+	float		angle_rad;
 }	t_player;
 
 typedef struct s_keybindings

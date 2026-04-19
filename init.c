@@ -50,6 +50,7 @@ t_map	**alloc_active_doors(t_data *data)
 
 bool	init(t_data *data, t_verif *verif)
 {
+	data->player.fov = FOV;
 	data->map = map_struct_prep(verif->map);
 	if (!data->map)
 		return (false);

@@ -80,4 +80,7 @@ void	set_player(char **map, t_player *player)
 	player->cam_plane_normalized = player->cam_plane;
 	player->cam_plane = vec2d_mul(player->cam_plane, player->fov_scale);
 	player->radius = PLAYER_RADIUS;
+	player->angle_rad = atan2f(player->dir.y, player->dir.x);
+	if (player->angle_rad < 0)
+		player->angle_rad += M_PI * 2;
 }

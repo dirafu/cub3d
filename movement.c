@@ -8,6 +8,9 @@ void	rotate_player(t_player *player, float angle)
 	player->cam_plane.x = player->dir.y;
 	player->cam_plane_normalized = player->cam_plane;
 	player->cam_plane = vec2d_mul(player->cam_plane, player->fov_scale);
+	player->angle_rad = atan2f(player->dir.y, player->dir.x);
+	if (player->angle_rad < 0)
+		player->angle_rad += M_PI * 2;
 }
 
 static t_point2d	get_direction(t_point2d player_dir, enum e_direction dir)
