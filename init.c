@@ -73,6 +73,7 @@ bool	init(t_data *data, t_verif *verif)
 	data->floor_color = (verif->f_arr[0] << (8 * 2))
 		+ (verif->f_arr[1] << 8)
 		+ (verif->f_arr[2]);
+	data->verif = verif;
 	return (true);
 }
 

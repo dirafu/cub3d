@@ -52,6 +52,7 @@ void	free_data(t_data *data)
 	free_sprites(data);
 	free_sprites_array(data);
 	free_xdata(data);
+	struct_destroyer(data->verif);
 }
 
 void	print_error(void)

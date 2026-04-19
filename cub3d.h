@@ -226,6 +226,7 @@ typedef struct s_data
 	size_t					active_doors_count;
 	int						ceiling_color;
 	int						floor_color;
+	t_verif					*verif;
 }	t_data;
 
 typedef struct s_render_facilities
@@ -324,6 +325,7 @@ void					switch_sprites_frames(t_time_data *time_data,
 							t_sprite *sprites);
 
 //cleanup
+void					struct_destroyer(t_verif *v);
 void					free_data(t_data *data);
 int						exit_handler(t_data *data);
 void					free_textures(t_data *data);

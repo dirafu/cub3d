@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   verif.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ikiriush <ikiriush@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlchinen <vlchinen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 02:09:24 by ikiriush          #+#    #+#             */
-/*   Updated: 2026/04/19 20:33:04 by ikiriush         ###   ########.fr       */
+/*   Updated: 2026/04/19 22:07:35 by vlchinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,6 @@
 # include "../cub3d.h"
 
 typedef struct s_verif t_verif;
-// {
-// 	char	*no;
-// 	char	*so;
-// 	char	*we;
-// 	char	*ea;
-// 	char	*f;
-// 	char	*c;
-// 	int		f_arr[3];
-// 	int		c_arr[3];
-// 	char	**map;
-// 	int		rows;
-// 	int		cols;
-// 	char	orient;
-// 	int		pos_x;
-// 	int		pos_y;
-// }	t_verif;
 
 int		arg_check(char *argv);
 int		col_counter(char **map);
