@@ -192,6 +192,24 @@ typedef struct s_time_data
 	uint64_t	last_frame_time;
 }	t_time_data;
 
+typedef struct s_verif
+{
+	char	*no;
+	char	*so;
+	char	*we;
+	char	*ea;
+	char	*f;
+	char	*c;
+	int		f_arr[3];
+	int		c_arr[3];
+	char	**map;
+	int		rows;
+	int		cols;
+	char	orient;
+	int		pos_x;
+	int		pos_y;
+}	t_verif;
+
 typedef struct s_data
 {
 	t_time_data				time_data;
@@ -258,22 +276,6 @@ typedef struct s_sprite_draw_ctx
 	float		tx_y;
 	float		sp_z;
 }	t_sprite_draw_ctx;
-
-typedef struct s_verif
-{
-	char	*no;
-	char	*so;
-	char	*we;
-	char	*ea;
-	char	*f;
-	char	*c;
-	int		f_arr[3];
-	int		c_arr[3];
-	char	**map;
-	int		rows;
-	int		cols;
-	int		orient_set;
-}	t_verif;
 
 //input
 void					set_default_keybindings(t_keybindings *keybindings);
@@ -359,5 +361,8 @@ void					hook_up(t_data *data);
 bool					init_mouse(t_data *data);
 
 t_map					**map_struct_prep(char **map);
+
+//verif
+int	main_verif(int argc, char **argv, t_verif *v);
 
 #endif
