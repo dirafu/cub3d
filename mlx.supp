@@ -1,0 +1,45 @@
+{
+   mlx_suppress
+   Memcheck:Param
+   writev(vector[0])
+   fun:writev
+   obj:/usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
+   obj:/usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
+   fun:xcb_writev
+   fun:_XSend
+   fun:_XReadEvents
+   fun:XWindowEvent
+   fun:mlx_int_wait_first_expose
+   fun:mlx_new_window
+   fun:x_init
+   fun:init
+   fun:main
+}
+{
+   x11_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*libX11*
+}
+{
+   xcursor_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*libXcursor*
+}
+{
+   xcb_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*libxcb*
+}
+{
+   dlopen_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*ld-linux*
+}
