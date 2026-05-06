@@ -82,6 +82,7 @@ void	draw_frame(t_data *data)
 	draw_walls(data);
 	switch_sprites_frames(&(data->time_data), data->sprites);
 	draw_sprites(data);
+	draw_minimap_main(data);
 	mlx_put_image_to_window(x_d->xconn,
 		x_d->win, x_d->curr_framebuf->img, 0, 0);
 	mlx_do_sync(x_d->xconn);

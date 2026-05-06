@@ -13,8 +13,8 @@
 # include <stdint.h>
 # include <sys/time.h>
 
-# define RES_X 640
-# define RES_Y 480
+# define RES_X 1920
+# define RES_Y 1080
 # define FOV 55
 # define PLAYER_RADIUS 0.1f
 # define A_FRAME_DUR_U 200000
@@ -210,6 +210,16 @@ typedef struct s_verif
 	int		pos_y;
 }	t_verif;
 
+typedef struct s_minimap
+{
+	int		tile_px;
+	int		size_x;
+	int		size_y;
+	int		offset_x;
+	int		offset_y;
+	int		byte_pp;
+}	t_minimap;
+
 typedef struct s_data
 {
 	t_time_data				time_data;
@@ -227,6 +237,7 @@ typedef struct s_data
 	int						ceiling_color;
 	int						floor_color;
 	t_verif					*verif;
+	t_minimap				mm;
 }	t_data;
 
 typedef struct s_render_facilities
@@ -366,5 +377,8 @@ t_map					**map_struct_prep(char **map);
 
 //verif
 int	main_verif(int argc, char **argv, t_verif *v);
+
+//minimap
+void	draw_minimap_main(t_data *data);
 
 #endif

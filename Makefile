@@ -11,7 +11,10 @@ test_mock_map_structure_prep.c read_resources.c read_resources2.c read_resources
       verif/pre_map_structure_check.c \
       verif/row_checker.c \
       verif/utils_map_check.c \
-      verif/utils.c
+      verif/utils.c \
+	  minimap/main_mm.c \
+	  minimap/utils_minimap.c \
+	  minimap/cast_rays_mm.c
 P_OBJ=$(P_SRC:.c=.o)
 
 all: $(HEADER) $(P_SRC) $(P_NAME)

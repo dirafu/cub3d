@@ -6,7 +6,7 @@
 /*   By: ikiriush <ikiriush@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 02:30:15 by ikiriush          #+#    #+#             */
-/*   Updated: 2026/04/12 02:28:44 by ikiriush         ###   ########.fr       */
+/*   Updated: 2026/04/27 23:13:29 by ikiriush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	map_creator(t_verif *v, int *fd)
 	return (v->map[row_count] = NULL, 0);
 }
 
-int static	first_last_row_check(char *row)
+static int	first_last_row_check(char *row)
 {
 	int	len;
 	int	i;
@@ -76,7 +76,7 @@ int static	first_last_row_check(char *row)
 	return (0);
 }
 
-int static	edge_case_checker(t_verif *v)
+static int	edge_case_checker(t_verif *v)
 {
 	int	i;
 	int	j;
