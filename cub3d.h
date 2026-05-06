@@ -376,9 +376,9 @@ bool					init_mouse(t_data *data);
 t_map					**map_struct_prep(char **map);
 
 //verif
-int	main_verif(int argc, char **argv, t_verif *v);
+int						main_verif(int argc, char **argv, t_verif *v);
 
 //minimap
-void	draw_minimap_main(t_data *data);
+void					draw_minimap_main(t_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ikiriush <ikiriush@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 01:22:49 by ikiriush          #+#    #+#             */
-/*   Updated: 2026/05/07 01:42:07 by ikiriush         ###   ########.fr       */
+/*   Updated: 2026/05/07 03:36:56 by ikiriush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ static void	cast_mm_ray(t_data *data, float t)
 			|| (data->map[i][j].type == CELL_DOOR
 			&& data->map[i][j].door_status == 0))
 			break ;
-		if (abs(i + (int)data->player.pos.y) <= SPAN_Y
-			&& abs(j - (int)data->player.pos.x) <= SPAN_X)
+		if (ft_abs(i + (int)data->player.pos.y) <= SPAN_Y
+			&& ft_abs(j - (int)data->player.pos.x) <= SPAN_X)
 			put_px_ray(data, x, y);
 	}
 }

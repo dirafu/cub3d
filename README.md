@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by ikiriush, vlchinen.*
+*This project has been created as part of the 42 curriculum by vlchinen, ikiriush.*
 
 # cub3D — My first RayCaster with miniLibX
 
@@ -22,9 +22,7 @@ The engine supports:
 ### Requirements
 
 - Linux (X11)
-- `cc` (C compiler)
 - miniLibX (bundled in `minilibx-linux/`)
-- libft (bundled in `libft/`)
 
 ### Compilation
 
@@ -77,6 +75,7 @@ C 225,30,0
 | `W` `A` `S` `D` | Move |
 | `←` `→` | Rotate view |
 | Mouse | Rotate view (bonus) |
+| Space | Open door (bonus) |
 | `ESC` | Quit |
 | Red cross | Quit |
 
