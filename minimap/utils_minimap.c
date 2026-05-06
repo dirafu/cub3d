@@ -6,7 +6,7 @@
 /*   By: ikiriush <ikiriush@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 02:55:21 by ikiriush          #+#    #+#             */
-/*   Updated: 2026/05/06 04:14:20 by ikiriush         ###   ########.fr       */
+/*   Updated: 2026/05/07 02:28:03 by ikiriush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,20 +91,25 @@ void	draw_player(t_data *data)
 void	draw_tile(t_data *data, int i, int j, int color)
 {
 	int		k;
-	int		offset;
 	int		offset_y_mm;
 	int		offset_x_mm;
+	int		x;
+	int		y;
 
 	k = 0;
+	x = j + (int)data->player.pos.x - SPAN_X;
+	y = i - (int)data->player.pos.y - SPAN_Y;
 	while (k < data->mm.tile_px - 1)
 	{
 		offset_x_mm = (data->mm.offset_x + data->mm.tile_px * j)
 			* data->mm.byte_pp;
 		offset_y_mm = (data->mm.offset_y + data->mm.tile_px * i + k)
 			* data->x_data.curr_framebuf->size_line;
-		offset = offset_x_mm + offset_y_mm;
+		if (data->map[y][x].type == CELL_DOOR
+			&& data->map[y][x].door_status == 0)
+			color = color + 0x55;
 		ft_memset
-			(data->x_data.curr_framebuf->addr + offset,
+			(data->x_data.curr_framebuf->addr + offset_x_mm + offset_y_mm,
 			color,
 			data->mm.tile_px * data->mm.byte_pp - 4);
 		k++;
