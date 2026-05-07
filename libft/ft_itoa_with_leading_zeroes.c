@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa_with_leading_zeroes.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlchinen <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vlchinen <vlchinen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 19:23:23 by vlchinen          #+#    #+#             */
-/*   Updated: 2025/01/25 20:40:08 by vlchinen         ###   ########.fr       */
+/*   Updated: 2026/05/07 16:46:21 by vlchinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_itoa_with_leading_zeroes_pt2(char *num_str, size_t num_init_len, size_t width, char *padded_num_str)
+void	ft_itoa_with_leading_zeroes_pt2(char *num_str,
+	size_t num_init_len, size_t width, char *padded_num_str)
 {
 	size_t	i;
 	size_t	j;
@@ -51,6 +52,7 @@ char	*ft_itoa_with_leading_zeroes(int num, size_t width)
 	padded_num_str = malloc(sizeof(char) * (width + 1));
 	if (!padded_num_str)
 		return (free(num_str), NULL);
-	ft_itoa_with_leading_zeroes_pt2(num_str, num_init_len, width, padded_num_str);
+	ft_itoa_with_leading_zeroes_pt2(num_str,
+		num_init_len, width, padded_num_str);
 	return (padded_num_str);
 }
