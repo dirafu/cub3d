@@ -85,7 +85,8 @@ void	step_player(t_player *player, t_map **map,
 	sign = ((step_size < 0) * -2 + 1);
 	step = get_direction(player->dir, dir);
 	step = vec2d_mul(step, sign);
-	radius = vec2d_mul(step, player->radius);
+	radius.x = player->radius * ((step.x < 0) * -2 + 1);
+	radius.y = player->radius * ((step.y < 0) * -2 + 1);
 	step = vec2d_mul(step, 0.05f);
 	step_size *= sign;
 	while (step_size > 0)
