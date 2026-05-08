@@ -6,7 +6,7 @@
 /*   By: ikiriush <ikiriush@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 01:22:49 by ikiriush          #+#    #+#             */
-/*   Updated: 2026/05/07 03:36:56 by ikiriush         ###   ########.fr       */
+/*   Updated: 2026/05/08 00:20:58 by ikiriush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ static void	put_px_ray(t_data *data, float x, float y)
 	frac_x = data->player.pos.x - (int)data->player.pos.x;
 	frac_y = data->player.pos.y - (int)data->player.pos.y;
 	put_px_on_img(&(data->x_data),
-		data->mm.offset_x + data->mm.tile_px * SPAN_X
+		data->mm.offset_x + data->mm.diff_x + data->mm.tile_px * SPAN_X
 		+ (int)(frac_x * data->mm.tile_px)
 		+ (x - data->player.pos.x) * data->mm.tile_px,
-		data->mm.offset_y + data->mm.tile_px * SPAN_Y
+		data->mm.offset_y + data->mm.diff_y + data->mm.tile_px * SPAN_Y
 		- (int)(frac_y * data->mm.tile_px)
 		+ (y - data->player.pos.y) * (-1) * data->mm.tile_px,
 		0xffe580ff);

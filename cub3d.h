@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ikiriush <ikiriush@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/08 04:31:40 by ikiriush          #+#    #+#             */
+/*   Updated: 2026/05/08 04:31:41 by ikiriush         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -218,6 +230,8 @@ typedef struct s_minimap
 	int		offset_x;
 	int		offset_y;
 	int		byte_pp;
+	int		diff_x;
+	int		diff_y;	
 }	t_minimap;
 
 typedef struct s_data

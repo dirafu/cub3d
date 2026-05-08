@@ -6,7 +6,7 @@
 /*   By: ikiriush <ikiriush@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 22:30:16 by ikiriush          #+#    #+#             */
-/*   Updated: 2026/04/12 02:30:05 by ikiriush         ###   ########.fr       */
+/*   Updated: 2026/05/08 02:06:30 by ikiriush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,10 @@ int	col_counter(char **map)
 
 int	space_zero_crosscheker(char **map, int i, int j)
 {
-	if (map[i][j - 1] == '0'
-		|| map[i - 1][j] == '0'
-		|| map[i][j + 1] == '0'
-		|| map[i + 1][j] == '0')
+	if (map[i][j - 1] == ' '
+		|| map[i - 1][j] == ' '
+		|| map[i][j + 1] == ' '
+		|| map[i + 1][j] == ' ')
 	{
 		printf("Void is exposed!\n");
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: ikiriush <ikiriush@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 04:12:50 by ikiriush          #+#    #+#             */
-/*   Updated: 2026/04/09 23:16:22 by ikiriush         ###   ########.fr       */
+/*   Updated: 2026/05/08 02:18:56 by ikiriush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,13 @@ int	row_checker(char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			if ((map[i][j] == ' ' && (j != 0 && j != ft_strlen(map[i]) - 1))
+			if ((ft_strchr("0NWESDod", map[i][j])
+				&& (j != 0 && j != ft_strlen(map[i]) - 1))
 				&& space_zero_crosscheker(map, i, j))
 				return (1);
 			if ((j > ft_strlen(map[i - 1]) - 1
 					|| (map[i + 1] && j > ft_strlen(map[i + 1]) - 1))
-				&& map[i][j] != '1')
+				&& (map[i][j] != '1' && map[i][j] != ' '))
 				return (printf("Out-of-bounds map portion has gaps!"), 1);
 			if (map[i][j] == 'D' && door_checker(map, i, j))
 				return (1);
