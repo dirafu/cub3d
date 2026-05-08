@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cast_rays_mm.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ikiriush <ikiriush@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlchinen <vlchinen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 01:22:49 by ikiriush          #+#    #+#             */
-/*   Updated: 2026/05/08 00:20:58 by ikiriush         ###   ########.fr       */
+/*   Updated: 2026/05/08 19:12:26 by vlchinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,22 @@ static void	put_px_ray(t_data *data, float x, float y)
 		0xffe580ff);
 }
 
+static int	check_adj(t_data *data, float x, float y)
+{
+	int	i;
+	int	j;
+
+	j = (int)x;
+	i = (int)y * (-1);
+	if (data->map[i][j].type == CELL_WALL
+			|| (data->map[i][j].type == CELL_DOOR
+			&& data->map[i][j].door_status == 0)
+			|| data->map[i][j].type == CELL_TERMINATOR
+			|| data->map[i][j].type == CELL_NONE)
+		return (1);
+	return (0);
+}
+
 static void	cast_mm_ray(t_data *data, float t)
 {
 	float	x;
@@ -47,9 +63,10 @@ static void	cast_mm_ray(t_data *data, float t)
 		y = y + (data->player.dir.y + data->player.cam_plane.y * t) * 0.01f;
 		j = (int)x;
 		i = (int)y * (-1);
-		if (data->map[i][j].type == CELL_WALL
-			|| (data->map[i][j].type == CELL_DOOR
-			&& data->map[i][j].door_status == 0))
+		if (check_adj(data, x, y) || check_adj(data, x + 0.01, y - 0.01)
+			|| check_adj(data, x - 0.01, y + 0.01)
+			|| check_adj(data, x + 0.01, y + 0.01)
+			|| check_adj(data, x - 0.01, y - 0.01))
 			break ;
 		if (ft_abs(i + (int)data->player.pos.y) <= SPAN_Y
 			&& ft_abs(j - (int)data->player.pos.x) <= SPAN_X)

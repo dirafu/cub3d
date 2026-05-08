@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ikiriush <ikiriush@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlchinen <vlchinen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 04:31:40 by ikiriush          #+#    #+#             */
-/*   Updated: 2026/05/08 04:31:41 by ikiriush         ###   ########.fr       */
+/*   Updated: 2026/05/08 19:26:04 by vlchinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <sys/time.h>
 
 # define RES_X 1920
-# define RES_Y 1080
+# define RES_Y 5
 # define FOV 55
 # define PLAYER_RADIUS 0.1f
 # define A_FRAME_DUR_U 200000
@@ -224,14 +224,14 @@ typedef struct s_verif
 
 typedef struct s_minimap
 {
-	int		tile_px;
-	int		size_x;
-	int		size_y;
-	int		offset_x;
-	int		offset_y;
-	int		byte_pp;
-	int		diff_x;
-	int		diff_y;	
+	int			tile_px;
+	int			size_x;
+	int			size_y;
+	int			offset_x;
+	int			offset_y;
+	int			byte_pp;
+	int			diff_x;
+	int			diff_y;
 }	t_minimap;
 
 typedef struct s_data
@@ -388,6 +388,7 @@ void					hook_up(t_data *data);
 bool					init_mouse(t_data *data);
 
 t_map					**map_struct_prep(char **map);
+// t_map					**map_struct_prep(char **map, t_verif *verif);
 
 //verif
 int						main_verif(int argc, char **argv, t_verif *v);

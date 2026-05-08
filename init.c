@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlchinen <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vlchinen <vlchinen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/07 16:50:15 by vlchinen          #+#    #+#             */
-/*   Updated: 2026/05/07 16:50:16 by vlchinen         ###   ########.fr       */
+/*   Updated: 2026/05/08 19:03:19 by vlchinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ bool	init(t_data *data, t_verif *verif)
 	if (!data->map)
 		return (false);
 	data->player.fov_scale = tanf(FOV / 2.0
-			* (M_PI / 180.0f) * ((float)RES_X / RES_Y));
+			* (M_PI / 180.0f)) * ((float)RES_X / RES_Y);
 	if (!x_init(&(data->x_data)) || !init_mouse(data))
 		return (false);
 	data->sprites_zsorted = alloc_zsorted(data);

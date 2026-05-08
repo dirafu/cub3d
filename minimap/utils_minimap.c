@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_minimap.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ikiriush <ikiriush@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlchinen <vlchinen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 02:55:21 by ikiriush          #+#    #+#             */
-/*   Updated: 2026/05/08 04:34:07 by ikiriush         ###   ########.fr       */
+/*   Updated: 2026/05/08 16:39:59 by vlchinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	draw_bg(t_data *data)
 	int	offset;
 
 	i = 0;
-	while (i < data->mm.size_y)
+	while (i < data->mm.tile_px * TILE_Y)
 	{
 		offset = (i + data->mm.offset_y + data->mm.diff_y)
 			* data->x_data.curr_framebuf->size_line
