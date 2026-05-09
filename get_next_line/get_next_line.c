@@ -12,6 +12,12 @@
 
 #include "get_next_line.h"
 
+int	ft_free(void *ptr)
+{
+	free(ptr);
+	return (1);
+}
+
 char	*get_next_line(int fd)
 {
 	char		*buff;
@@ -19,15 +25,16 @@ char	*get_next_line(int fd)
 	static char	*file;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
+	{
+		free(file);
+		file = NULL;
 		return (NULL);
+	}
 	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buff)
 	{
-		if (file)
-		{
-			free(file);
+		if (file && ft_free(file))
 			file = 0;
-		}
 		return (NULL);
 	}
 	file = read_buff_and_join_file(fd, buff, file);
