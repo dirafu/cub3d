@@ -6,7 +6,7 @@
 /*   By: ikiriush <ikiriush@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 01:25:34 by ikiriush          #+#    #+#             */
-/*   Updated: 2026/05/09 18:48:03 by ikiriush         ###   ########.fr       */
+/*   Updated: 2026/05/09 19:18:25 by ikiriush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	struct_destroyer(t_verif *v)
 	freer(&v->f, 0);
 	freer(&v->c, 0);
 	freer(0, &v->map);
+	get_next_line(-1);
 }
 
 void	gnl_drain(int *fd)

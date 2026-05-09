@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cast_rays_mm.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlchinen <vlchinen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ikiriush <ikiriush@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 01:22:49 by ikiriush          #+#    #+#             */
-/*   Updated: 2026/05/09 14:37:20 by vlchinen         ###   ########.fr       */
+/*   Updated: 2026/05/09 18:58:55 by ikiriush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ static int	check_adj(t_data *data, float x, float y)
 	j = (int)x;
 	i = (int)y * (-1);
 	if (i < 0 || i >= data->verif->rows
-			|| j < 0 || j >= data->verif->cols
-			|| data->map[i][j].type == CELL_WALL
-			|| (data->map[i][j].type == CELL_DOOR
-			&& data->map[i][j].door_status == 0)
-			|| data->map[i][j].type == CELL_TERMINATOR
-			|| data->map[i][j].type == CELL_NONE)
+		|| j < 0 || j >= data->verif->cols
+		|| data->map[i][j].type == CELL_WALL
+		|| (data->map[i][j].type == CELL_DOOR
+		&& data->map[i][j].door_status == 0)
+		|| data->map[i][j].type == CELL_TERMINATOR
+		|| data->map[i][j].type == CELL_NONE)
 		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ikiriush <ikiriush@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 19:52:25 by ikiriush          #+#    #+#             */
-/*   Updated: 2026/05/09 18:37:15 by ikiriush         ###   ########.fr       */
+/*   Updated: 2026/05/09 19:04:01 by ikiriush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,5 @@ int	pre_map_structure_checker(char *argv, t_verif *v, int *fd)
 	}
 	if (pre_map_validator(fd, v))
 		return (gnl_drain(fd), 1);
-	return (gnl_drain(fd), 0);
+	return (0);
 }
