@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlchinen <vlchinen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ikiriush <ikiriush@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 04:31:40 by ikiriush          #+#    #+#             */
-/*   Updated: 2026/05/09 14:25:54 by vlchinen         ###   ########.fr       */
+/*   Updated: 2026/05/09 17:50:46 by ikiriush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <sys/time.h>
 
 # define RES_X 1920
-# define RES_Y 5
+# define RES_Y 1080
 # define FOV 55
 # define PLAYER_RADIUS 0.1f
 # define A_FRAME_DUR_U 200000

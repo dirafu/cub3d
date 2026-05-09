@@ -6,7 +6,7 @@
 /*   By: ikiriush <ikiriush@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 01:25:34 by ikiriush          #+#    #+#             */
-/*   Updated: 2026/04/19 20:16:58 by ikiriush         ###   ########.fr       */
+/*   Updated: 2026/05/09 18:48:03 by ikiriush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,5 @@ void	gnl_drain(int *fd)
 		freer(&line, 0);
 		line = get_next_line(*fd);
 	}
+	get_next_line(-1);
 }

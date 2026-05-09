@@ -6,7 +6,7 @@
 /*   By: ikiriush <ikiriush@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 19:52:25 by ikiriush          #+#    #+#             */
-/*   Updated: 2026/05/08 01:21:33 by ikiriush         ###   ########.fr       */
+/*   Updated: 2026/05/09 18:37:15 by ikiriush         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static int	pre_map_validator(int *fd, t_verif *v)
 		{
 			if (pre_map_parse(line, v))
 			{
-				printf("No matches in pre-map content!\n");
+				printf("Invalid pre-map content!\n");
 				return (freer(&line, 0), 1);
 			}
 		}
@@ -106,5 +106,5 @@ int	pre_map_structure_checker(char *argv, t_verif *v, int *fd)
 	}
 	if (pre_map_validator(fd, v))
 		return (gnl_drain(fd), 1);
-	return (0);
+	return (gnl_drain(fd), 0);
 }
