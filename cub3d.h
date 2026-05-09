@@ -6,7 +6,7 @@
 /*   By: vlchinen <vlchinen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 04:31:40 by ikiriush          #+#    #+#             */
-/*   Updated: 2026/05/08 19:26:04 by vlchinen         ###   ########.fr       */
+/*   Updated: 2026/05/09 14:25:54 by vlchinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -387,8 +387,8 @@ t_sprite_rendering_view	*alloc_zsorted(t_data *data);
 void					hook_up(t_data *data);
 bool					init_mouse(t_data *data);
 
-t_map					**map_struct_prep(char **map);
-// t_map					**map_struct_prep(char **map, t_verif *verif);
+// t_map					**map_struct_prep(char **map);
+t_map					**map_struct_prep(char **map, t_verif *verif);
 
 //verif
 int						main_verif(int argc, char **argv, t_verif *v);

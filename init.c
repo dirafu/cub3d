@@ -6,7 +6,7 @@
 /*   By: vlchinen <vlchinen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/07 16:50:15 by vlchinen          #+#    #+#             */
-/*   Updated: 2026/05/08 19:03:19 by vlchinen         ###   ########.fr       */
+/*   Updated: 2026/05/09 14:26:05 by vlchinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_map	**alloc_active_doors(t_data *data)
 bool	init(t_data *data, t_verif *verif)
 {
 	data->player.fov = FOV;
-	data->map = map_struct_prep(verif->map);
+	data->map = map_struct_prep(verif->map, verif);
 	if (!data->map)
 		return (false);
 	data->player.fov_scale = tanf(FOV / 2.0

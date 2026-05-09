@@ -6,7 +6,7 @@
 /*   By: vlchinen <vlchinen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/07 16:52:38 by vlchinen          #+#    #+#             */
-/*   Updated: 2026/05/08 19:03:48 by vlchinen         ###   ########.fr       */
+/*   Updated: 2026/05/09 14:39:22 by vlchinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,28 +53,26 @@ void	map_struct_prep_pt2(char **map, t_map **map_struct, int i, int j)
 	}
 }
 
-t_map	**map_struct_prep(char **map)
+t_map	**map_struct_prep(char **map, t_verif *verif)
 {
 	size_t	i;
 	size_t	j;
-	size_t	row_len;
-	size_t	col_size;
 	t_map	**map_struct;
 
-	col_size = map_col_size(map);
 	i = 0;
-	map_struct = ft_calloc(col_size + 1, sizeof(*map_struct));
+	map_struct = ft_calloc(verif->rows + 1, sizeof(*map_struct));
 	if (!map_struct)
 		return (NULL);
 	while (map[i])
 	{
 		j = 0;
-		row_len = ft_strlen(map[i]);
-		map_struct[i] = ft_calloc(row_len + 1, sizeof(**map_struct));
+		map_struct[i] = ft_calloc(verif->cols + 1, sizeof(**map_struct));
 		if (!map_struct[i])
 			return (NULL);
 		while (map[i][j])
 			map_struct_prep_pt2(map, map_struct, i, j++);
+		while (j < (size_t)verif->cols)
+			map_struct[i][j++].type = CELL_NONE;
 		i++;
 	}
 	return (map_struct);
