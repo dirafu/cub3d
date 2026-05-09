@@ -13,7 +13,7 @@
 #ifndef VERIF_H
 # define VERIF_H
 
-# include "../cub3d.h"
+# include "../raycast/cub3d.h"
 
 typedef struct s_verif	t_verif;
 

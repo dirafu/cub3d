@@ -14,9 +14,9 @@
 # define CUB3D_H
 
 # define _DEFAULT_SOURCE
-# include "minilibx-linux/mlx.h"
-# include "libft/libft.h"
-# include "get_next_line/get_next_line.h"
+# include "../minilibx-linux/mlx.h"
+# include "../libft/libft.h"
+# include "../get_next_line/get_next_line.h"
 # include <fcntl.h>
 # include <math.h>
 # include <stdbool.h>
