@@ -50,8 +50,8 @@ t_point2d	transform_pos(t_player *player, t_sprite *sprite)
 	return (transformed);
 }
 
-size_t	transform_sprites_pos(t_sprite_rendering_view *r_view,
-	t_sprite *sprites, t_player *player, int res[2])
+size_t	transform_sprites_pos(t_sprite_rendering_view *rview,
+	t_sprite *sprites, t_player *p, int res[2])
 {
 	size_t		i;
 	size_t		vis;
@@ -60,22 +60,22 @@ size_t	transform_sprites_pos(t_sprite_rendering_view *r_view,
 	vis = 0;
 	while (sprites[i].animation)
 	{
-		r_view[vis].pos_tr = transform_pos(player, &(sprites[i]));
-		if (r_view[vis].pos_tr.y > 0.1f)
+		rview[vis].pos_tr = transform_pos(p, &(sprites[i]));
+		if (rview[vis].pos_tr.y > 0.1f)
 		{
-			r_view[vis].p_res[1] = res[1] / r_view[vis].pos_tr.y;
-			r_view[vis].p_res[0] = r_view[vis].p_res[1]
+			rview[vis].p_res[1] = res[1] / (rview[vis].pos_tr.y * p->hor_scale);
+			rview[vis].p_res[0] = rview[vis].p_res[1]
 				* ((float)sprites[i].animation->frames->res_x
 					/ sprites[i].animation->frames->res_y);
-			r_view[vis].p_x = r_view[vis].pos_tr.x / r_view[vis].pos_tr.y;
-			r_view[vis].center_x = (((r_view[vis].p_x + player->fov_scale)
-						/ (player->fov_scale * 2)) * res[0]);
-			if (r_view[vis].center_x + r_view[vis].p_res[0] / 2 > 0
-				&& r_view[vis].center_x - r_view[vis].p_res[0] / 2 < res[0])
-				r_view[vis++].sprite = &(sprites[i]);
+			rview[vis].p_x = rview[vis].pos_tr.x / rview[vis].pos_tr.y;
+			rview[vis].center_x = (((rview[vis].p_x + p->cam_scale)
+						/ (p->cam_scale * 2)) * res[0]);
+			if (rview[vis].center_x + rview[vis].p_res[0] / 2 > 0
+				&& rview[vis].center_x - rview[vis].p_res[0] / 2 < res[0])
+				rview[vis++].sprite = &(sprites[i]);
 		}
 		i++;
 	}
-	r_view[vis].sprite = NULL;
+	rview[vis].sprite = NULL;
 	return (vis);
 }

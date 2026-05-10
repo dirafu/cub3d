@@ -22,7 +22,7 @@ bool	x_init(t_x_data *data)
 	data->xconn = mlx_init();
 	if (!data->xconn)
 		return (false);
-	data->win = mlx_new_window(data->xconn, RES_X, RES_Y, "test");
+	data->win = mlx_new_window(data->xconn, RES_X, RES_Y, "Cub3D");
 	if (!data->win)
 		return (false);
 	while (i < 2)
@@ -62,12 +62,15 @@ t_map	**alloc_active_doors(t_data *data)
 
 bool	init(t_data *data, t_verif *verif)
 {
-	data->player.fov = FOV;
 	data->map = map_struct_prep(verif->map, verif);
 	if (!data->map)
 		return (false);
-	data->player.fov_scale = tanf(FOV / 2.0
-			* (M_PI / 180.0f)) * ((float)RES_X / RES_Y);
+	if (FOV < 1 || FOV >= 180)
+		return ((void)printf("Cub3d: an error occured: "
+				"FOV cannot be negative or bigger than 179\n"), false);
+	data->player.cam_scale = tanf(FOV / 2.0 * (M_PI / 180.0f));
+	data->player.hor_scale = data->player.cam_scale
+		* 2.0 * ((float)RES_Y / RES_X);
 	if (!x_init(&(data->x_data)) || !init_mouse(data))
 		return (false);
 	data->sprites_zsorted = alloc_zsorted(data);
@@ -80,12 +83,9 @@ bool	init(t_data *data, t_verif *verif)
 	set_default_keybindings(data->input.keybindings);
 	set_player(verif->map, &data->player);
 	data->ceiling_color = (verif->c_arr[0] << (8 * 2))
-		+ (verif->c_arr[1] << 8)
-		+ (verif->c_arr[2]);
+		+ (verif->c_arr[1] << 8) + (verif->c_arr[2]);
 	data->floor_color = (verif->f_arr[0] << (8 * 2))
-		+ (verif->f_arr[1] << 8)
-		+ (verif->f_arr[2]);
-	data->verif = verif;
+		+ (verif->f_arr[1] << 8) + (verif->f_arr[2]);
 	return (true);
 }
 

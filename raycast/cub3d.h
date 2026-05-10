@@ -27,7 +27,7 @@
 
 # define RES_X 1920
 # define RES_Y 1080
-# define FOV 55
+# define FOV 66
 # define PLAYER_RADIUS 0.1f
 # define A_FRAME_DUR_U 200000
 # define DOOR_AUTO_CLOSE_T 5000000
@@ -181,8 +181,8 @@ typedef struct s_player
 	t_point2d	cam_plane;
 	t_point2d	cam_plane_normalized;
 	float		radius;
-	float		fov_scale;
-	float		fov;
+	float		cam_scale;
+	float		hor_scale;
 	float		angle_rad;
 }	t_player;
 

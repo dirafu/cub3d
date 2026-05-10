@@ -43,7 +43,8 @@ bool	draw_door_plate(int x, t_render_facilities *rf,
 	if (rf->tex_x > door_open_factor)
 	{
 		data->x_data.zbuff[x] = get_hit_dist(rf);
-		rf->wall_height = data->x_data.res[1] / data->x_data.zbuff[x];
+		rf->wall_height = data->x_data.res[1]
+			/ (data->x_data.zbuff[x] * data->player.hor_scale);
 		rf->tex_x -= door_open_factor;
 		rf->door_plate = true;
 		return (put_wall_bar_on_img(x, data, rf), true);

@@ -63,7 +63,8 @@ void	cast_ray(t_data *data, t_point2d raydir, int x)
 			rf.hit = HIT_NONE;
 	}
 	data->x_data.zbuff[x] = get_hit_dist(&rf);
-	rf.wall_height = data->x_data.res[1] / data->x_data.zbuff[x];
+	rf.wall_height = data->x_data.res[1]
+		/ (data->x_data.zbuff[x] * data->player.hor_scale);
 	if (rf.hit == HIT_EAST || rf.hit == HIT_WEST)
 		rf.tex_x = data->player.pos.y + raydir.y * (rf.next_x - rf.t_x);
 	else if (rf.hit == HIT_NORTH || rf.hit == HIT_SOUTH)

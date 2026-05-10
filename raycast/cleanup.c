@@ -69,7 +69,8 @@ void	free_data(t_data *data)
 
 void	print_error(void)
 {
-	perror("Cub3d: an error occured");
+	if (errno != 0)
+		perror("Cub3d: an error occured");
 }
 
 int	exit_handler(t_data *data)

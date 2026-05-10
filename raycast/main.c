@@ -19,6 +19,7 @@ int	main(int argc, char **argv)
 
 	if (main_verif(argc, argv, &verif))
 		return (1);
+	data.verif = &verif;
 	if (!init(&data, &verif) || !read_resources(&data, &verif))
 		return (free_data(&data), print_error(), 1);
 	hook_up(&data);
