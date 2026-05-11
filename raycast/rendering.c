@@ -45,6 +45,8 @@ float	get_hit_dist(t_render_facilities *rf)
 		hit_dist = rf->next_x - rf->t_x;
 	else if (rf->hit == HIT_NORTH || rf->hit == HIT_SOUTH)
 		hit_dist = rf->next_y - rf->t_y;
+	if (hit_dist < 0.0001f || isnan(hit_dist) || isinf(hit_dist))
+		hit_dist = 0.0001f;
 	return (hit_dist);
 }
 
@@ -53,14 +55,16 @@ void	cast_ray(t_data *data, t_point2d raydir, int x)
 	t_render_facilities	rf;
 
 	fill_render_info(&rf, &data->player, &raydir);
-	while (rf.hit == HIT_NONE)
+	while (1)
 	{
-		if (data->map[-rf.y][rf.x].type == CELL_DOOR
-				&& draw_door(x, data, &rf, raydir))
+		if (-rf.y < 0 || (-rf.y) >= data->verif->rows
+			|| rf.x < 0 || rf.x >= data->verif->cols
+			|| (data->map[-rf.y][rf.x].type == CELL_DOOR
+			&& draw_door(x, data, &rf, raydir)))
 			return ;
+		if (data->map[-rf.y][rf.x].type == CELL_WALL)
+			break ;
 		do_step(&raydir, &rf);
-		if (data->map[-rf.y][rf.x].type != CELL_WALL)
-			rf.hit = HIT_NONE;
 	}
 	data->x_data.zbuff[x] = get_hit_dist(&rf);
 	rf.wall_height = data->x_data.res[1]
